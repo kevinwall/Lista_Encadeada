@@ -12,6 +12,6 @@ Este projeto tem a intenção de implementar uma lista encadeada personalizada s
 
 # Autoria: #
 
-Todos os códigos foram implementados por [Kevin Wallacy de Souza Maciel](https://github.com/kevinwall) <kevinwall@ufrn.edu.br> e...
+Todos os códigos foram implementados por [Kevin Wallacy de Souza Maciel](https://github.com/kevinwall) (Email de contato: <kevinwall@ufrn.edu.br>) e...
 
 &copy; IMD/UFRN 2018-2019
