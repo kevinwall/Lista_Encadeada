@@ -18,7 +18,7 @@ list<T>::list( void ) : m_head(nullptr), m_size(0)
 template<typename T>
 list<T>::list(typename list<T>::size_type count )
 {
-	m_size = count;
+	this->m_size = count;
 	Node* atual;
 	Node* prev;
 	
@@ -67,16 +67,19 @@ list<T>::list( const list& other )
 
 	while(origin->m_next != nullptr)
 	{
+
 		Node* new_node = new Node;
 
 		copy->m_data = origin->m_data;
 		copy->m_next = new_node;
+		std::cout<<copy->m_data<<std::endl;
 
 		copy = copy->m_next;
 		origin = origin->m_next;
 	}
 	
 	copy->m_data = origin->m_data;
+	std::cout<<copy->m_data<<std::endl;
 
 	std::cout<<"Lista criada com sucesso"<<std::endl;
 }
@@ -97,20 +100,22 @@ list<T>::list( std::initializer_list<T> ilist )
 	{
 		Node* new_node = new Node;
 
-		if(i == 0)
+		if(i == ilist.begin())
 		{
 			atual = new_node;
 			atual->m_data = *i;
 
 			prev = atual;
 			this->m_head = atual;
-			
-			i++;
+			this->m_size = ilist.size();
+
+			std::cout<<atual->m_data<<std::endl;
 		}
 		else
 		{
 			atual = new_node;
 			atual->m_data = *i;
+			std::cout<<atual->m_data<<std::endl;
 
 			prev->m_next = atual;
 			prev = prev->m_next;
@@ -125,17 +130,21 @@ list<T>::~list()
 	Node* atual;
 	Node* prev;
 
-	atual = this->m_head;
-
-	while(atual->m_next != nullptr)
+	if( this->m_head != nullptr)
 	{
-		prev = atual;
-		atual = atual->m_next;
+		atual = this->m_head;
 
-		delete prev;
+		while(atual->m_next != nullptr)
+		{
+
+			prev = atual;
+			atual = atual->m_next;
+
+			delete prev;
+		}
+
+		delete atual;
 	}
-
-	delete atual;
 }
 
 /**
@@ -160,12 +169,14 @@ list<T> & list<T>::operator=( const list& other )
 		while(prev->m_next != nullptr)
 		{
 			atual->m_data = prev->m_data;
+			std::cout<<atual->m_data<<std::endl;
 			atual = atual->m_next;
 			prev = prev->m_next;
 		}
 
 		atual->m_data = prev->m_data;
-		std::cout<<"Lista criada com sucesso"<<std::endl;
+		std::cout<<atual->m_data<<std::endl;
+		std::cout<<"Primeira igualdade funcionou"<<std::endl;
 
 		return *this;
 
@@ -191,15 +202,24 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		int* i;
 
-		for(i = (int *)ilist.begin(); i < (int*)ilist.end(); i++)
+		i = (int*)ilist.begin();
+
+		while(atual->m_next != nullptr)
 		{
-			
+			std::cout<<"Entrei no for"<<std::endl;
+
 			atual->m_data = *i;
+			std::cout<<atual->m_data<<std::endl;
 
 			atual= atual->m_next;
+			i++;
 		
 		}
-		std::cout<<"Lista criada com sucesso"<<std::endl;
+
+		atual->m_data = *i;
+		std::cout<<*i<<std::endl;
+
+		std::cout<<"segunda igualdade funcionou"<<std::endl;
 
 		return *this;
 	}
