@@ -7,7 +7,6 @@ template<typename T>
 list<T>::list( void ) : m_head(nullptr), m_size(0)
 {
 	/*Empty*/
-	std::cout<<"Lista criada com sucesso"<<std::endl;
 }
 
 
@@ -41,7 +40,6 @@ list<T>::list(typename list<T>::size_type count )
 			prev = prev->m_next;
 		}
 	}
-	std::cout<<"Lista criada com sucesso"<<std::endl;
 }
 
 /**
@@ -72,16 +70,13 @@ list<T>::list( const list& other )
 
 		copy->m_data = origin->m_data;
 		copy->m_next = new_node;
-		std::cout<<copy->m_data<<std::endl;
 
 		copy = copy->m_next;
 		origin = origin->m_next;
 	}
 	
 	copy->m_data = origin->m_data;
-	std::cout<<copy->m_data<<std::endl;
 
-	std::cout<<"Lista criada com sucesso"<<std::endl;
 }
 
 /**
@@ -109,19 +104,16 @@ list<T>::list( std::initializer_list<T> ilist )
 			this->m_head = atual;
 			this->m_size = ilist.size();
 
-			std::cout<<atual->m_data<<std::endl;
 		}
 		else
 		{
 			atual = new_node;
 			atual->m_data = *i;
-			std::cout<<atual->m_data<<std::endl;
 
 			prev->m_next = atual;
 			prev = prev->m_next;
 		}
 	}
-	std::cout<<"Lista criada com sucesso"<<std::endl;
 }
 
 template<typename T>
@@ -169,14 +161,11 @@ list<T> & list<T>::operator=( const list& other )
 		while(prev->m_next != nullptr)
 		{
 			atual->m_data = prev->m_data;
-			std::cout<<atual->m_data<<std::endl;
 			atual = atual->m_next;
 			prev = prev->m_next;
 		}
 
 		atual->m_data = prev->m_data;
-		std::cout<<atual->m_data<<std::endl;
-		std::cout<<"Primeira igualdade funcionou"<<std::endl;
 
 		return *this;
 
@@ -206,10 +195,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		while(atual->m_next != nullptr)
 		{
-			std::cout<<"Entrei no for"<<std::endl;
-
 			atual->m_data = *i;
-			std::cout<<atual->m_data<<std::endl;
 
 			atual= atual->m_next;
 			i++;
@@ -217,9 +203,6 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 		}
 
 		atual->m_data = *i;
-		std::cout<<*i<<std::endl;
-
-		std::cout<<"segunda igualdade funcionou"<<std::endl;
 
 		return *this;
 	}
