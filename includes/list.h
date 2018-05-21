@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <initializer_list>
 #include <cstring>
+#include <utility>
+#include <vector>
 
 
 namespace sc
@@ -31,7 +33,7 @@ namespace sc
 
 			list( std::initializer_list<T> ilist );
 
-			∼list( );
+			~list();
 
 			list& operator=( const list& other );
 
@@ -57,19 +59,22 @@ namespace sc
 
 			void assign( const T & value );
 
-			bool operator==( const Vector& lhs, const Vector& rhs );
+			bool operator==(const list& rhs );
 
-			bool operator!=( const Vector& lhs, const Vector& rhs );
+			bool operator!=(const list& rhs );
 
-			class node
+			class Node
 			{
-				T m_data;
-				node* m_next;
-			}
+				public:
+					T m_data;
+					Node* m_next;
+				//Node* m_prev
+			};
 
 		private:
 			size_type m_size;
-			node & m_head;
+			Node* m_head;
+			//Node & m_tail;
 	};
 
 	#include "list.inl"
