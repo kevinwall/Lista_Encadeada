@@ -575,3 +575,96 @@ bool list<T>::operator !=( const list& rhs){
 	return false;
 }
 */
+
+/**
+*@brief Função begin do iterator.
+*/
+template <typename T>
+friend typename list<T>::iterator list<T>::iterator::begin()
+{
+	return iterator(m_head.m_next);
+}
+
+/**
+*@brief Função end do iterator.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::end()
+{
+	return iterator(m_tail.m_prev);
+}
+
+/**
+*@brief Operador ++ do iterator (it++).
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator++()
+{
+	iterator temp(this);
+
+	this = this->m_next;
+
+	return temp;
+}
+
+/**
+*@brief Operador ++ do iterator (++it).
+*@param iterator it: iterador que será avançado. 
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator++(T it)
+{
+	return (it->m_next);
+}
+
+/**
+*@brief Operador -- do iterator (it--).
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator--()
+{
+	iterator temp(this);
+
+	this = this->m_prev;
+
+	return temp;
+}
+
+/**
+*@brief Operador -- do iterator (--it).
+*@param iterator it: iterador a ser regredido.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator--(T it)
+{
+	return (this->m_prev);
+}
+
+/**
+*@brief Operador * do iterator, que retorna o valor armazenado na posição do iterador.
+*/
+template <typename T>
+friend typename list<T>::iterator list<T>::iterator::operator*()
+{
+	return (this->m_data);
+}
+
+/**
+*@brief Operador == do iterator, que compara os valores dos iteradores e veem se são iguais.
+*@param iterator rhs: segundo iterador para comparar com o this.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
+{
+	return (this == rhs);
+}
+
+/**
+*@brief Operador != do iterator, que compara os valores dos iteradores e veem se são diferentes.
+*@param iterator rhs: segundo iterador para comparar com o this.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator!=(iterator rhs)
+{
+	return (this != rhs);
+}

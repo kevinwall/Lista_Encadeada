@@ -7,10 +7,44 @@
 #include <initializer_list>
 #include <cstring>
 #include <utility>
-
+#include <iterator>
 
 namespace sc
 {
+	
+
+	/*
+	template<typename T>
+	class const_iterator
+			{
+				public:
+					const_iterator(T* ponteiro = nullptr) : m_const_element(ponteiro)
+					{
+						//Empty
+					}
+
+					const_iterator begin() const;
+
+					const_iterator end() const;
+
+					const_iterator operator++();
+
+					const_iterator operator++( iterator it);
+
+					const_iterator operator--();
+
+					const_iterator operator--( iterator it);
+
+					const_iterator operator*();
+
+					const_iterator operator==(iterator rhs);
+
+					const_iterator operator!=()iterator rhs;
+
+				private:
+					T* m_const_element;
+			};
+	*/
 	template<typename T>
 	/**
 	*@brief Classe lista que será implementada neste projeto.
@@ -90,6 +124,43 @@ namespace sc
 						//Empty
 					}
 					
+			};
+
+			class iterator
+			{
+	
+				public:
+
+					friend iterator(Node* ponteiro) : m_element(ponteiro)
+					{
+
+					}
+
+					friend iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
+					{
+						//Empty
+					}
+
+					friend iterator begin();
+
+					friend iterator end();
+
+					friend iterator operator++();
+
+					friend iterator operator++(T it);
+
+					friend iterator operator--();
+
+					friend iterator operator--(T it);
+
+					friend iterator operator*();
+
+					friend iterator operator==(iterator rhs);
+
+					friend iterator operator!=(iterator rhs);
+
+				private:
+					Node* m_element;
 			};
 
 		private:

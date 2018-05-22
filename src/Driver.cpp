@@ -24,6 +24,8 @@ int main( void )
 	lista_count.~list();
 	*/
 
+	sc::list<int>::iterator lista_copy_it = lista_copy;
+
 	std::cout<<lista_inicia.size()<<std::endl;
 	std::cout<<"Limpando a lista..."<<std::endl;
 	lista_inicia.clear();
@@ -32,6 +34,16 @@ int main( void )
 	std::cout<<lista_copy.front()<<std::endl;
 	std::cout<<lista_copy.back()<<std::endl;
 	std::cout<<(lista_inicia == lista_inicia)<<std::endl;
+
+	/*
+	std::cout<<lista_copy_it.begin()<<std::endl;
+	std::cout<<lista_copy_it.end()<<std::endl;
+	std::cout<<(lista_copy_it.begin())*<<std::endl;
+	std::cout<<(lista_copy_it.begin() == lista_copy_it.begin())<<std::endl;
+	std::cout<<(lista_copy_it.begin() != lista_copy_it.begin())<<std::endl;
+	std::cout<<(lista_copy_it.begin())++<<std::endl;
+	std::cout<<(lista_copy_it.begin())--<<std::endl;
+	*/
 
 	/*
 	std::cout<<"dando push front"<<std::endl;
