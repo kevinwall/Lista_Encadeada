@@ -84,12 +84,12 @@ namespace sc
 					Node* m_next;
 					Node* m_prev;
 
-					/*
+					
 					Node(const T & d = T(), Node* p = nullptr, Node* n = nullptr) : m_data(d), m_next(n), m_prev(p)
 					{
 						//Empty
 					}
-					*/
+					
 			};
 
 		private:
