@@ -9,7 +9,7 @@ int main( void )
 
 	lista_count = lista_inicia; //Operador com copy
 
-	lista_copy = {3, 6, 7}; //Operador com lista
+	lista_copy = {3, 6, 7, 8, 9, 10}; //Operador com lista
 
 	/*
 	lista_def.~list();

@@ -197,14 +197,56 @@ list<T> & list<T>::operator=( const list& other )
 		}
 
 		atual->m_data = prev->m_data;
-
-		return *this;
-
 	}
 	else
 	{
-		throw std::runtime_error("Erro em operator=(): As listas encadeadas não possuem tamanho igual \n");
+		clear();
+
+		list<T> *ponteiro;
+		ponteiro = const_cast<list<T>*>(&other);
+
+		this->m_size = ponteiro->m_size;
+
+		Node* origin; 
+		Node* copy;
+		Node* prev;
+		origin = ponteiro->m_head;
+
+		//EXPERIMENTAL.
+		Node* node_principal = new Node;
+		copy = node_principal;
+		this->m_head = copy;
+
+		while(origin->m_next != nullptr)
+		{
+
+			Node* new_node = new Node;
+			prev = copy;
+
+			copy->m_data = origin->m_data;
+			copy->m_next = new_node;
+
+
+			if(copy == this->m_head)
+			{
+				copy->m_prev = nullptr;
+				copy = copy->m_next;
+				origin = origin->m_next;
+			}
+			else
+			{
+				copy = copy->m_next;
+				origin = origin->m_next;
+				copy->m_prev = prev;
+			}
+		}
+	
+		copy->m_data = origin->m_data;
+		copy->m_prev = prev;
+		this->m_tail = copy;
 	}
+
+	return *this;
 }
 
 /**
@@ -217,6 +259,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 	if(this->m_size == ilist.size())
 	{
 		Node* atual;
+		Node* prev;
 
 		atual = this->m_head;
 
@@ -226,21 +269,61 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		while(atual->m_next != nullptr)
 		{
+			prev = atual;
 			atual->m_data = *i;
 
 			atual= atual->m_next;
+			atual->m_prev = prev;
 			i++;
 		
 		}
 
+		atual->m_prev = prev;
 		atual->m_data = *i;
-
-		return *this;
 	}
 	else
 	{
-		throw std::runtime_error("Erro em operator=(): A lista encadeada e a lista inicializadora não possuem tamanho igual \n");
+		clear();
+
+		Node* prev;
+		Node* atual;
+		Node* prev_2;
+
+		int *i;
+
+		for(i = (int*)ilist.begin(); i < (int*)ilist.end(); i++)
+		{
+			Node* new_node = new Node;
+
+			if(i == ilist.begin())
+			{
+				atual = new_node;
+				atual->m_data = *i;
+
+				prev = atual;
+				this->m_head = atual;
+				this->m_size = ilist.size();
+				atual->m_prev = nullptr;
+			}
+			else
+			{
+				atual = new_node;
+				atual->m_data = *i;
+
+				prev->m_next = atual;
+				prev_2 = prev;
+				prev = prev->m_next;
+				prev->m_prev = prev_2;
+			}
+		}
+
+		prev->m_prev = prev_2;
+		prev->m_next = nullptr;
+		this->m_tail = prev;
+
 	}
+	
+	return *this;
 }
 
 /**
