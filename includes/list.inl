@@ -46,7 +46,6 @@ list<T>::list(typename list<T>::size_type count )
 	m_tail.m_prev = prev;
 	prev = m_head.m_next;
 	prev->m_prev = nullptr;
-
 }
 
 /**
