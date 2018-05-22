@@ -13,8 +13,17 @@
 namespace sc
 {
 	template<typename T>
+	/**
+	*@brief Classe lista que será implementada neste projeto.
+	*@param	size_type m_size: Tamanho de blocos da lista.
+	*@param	Node* m_head: Ponteiro para o primeiro bloco da lista.
+	*@param	Node* m_tail: Ponteiro para o ultimo bloco da lista.
+	*/
 	class list
 	{
+		/**
+		*@brief Alias para facilitar a manutenção da classe.
+		*/
 		typedef T value_type;
 		typedef size_t size_type;
 		typedef T* pointer;
@@ -63,6 +72,12 @@ namespace sc
 
 			bool operator!=(const list& rhs );
 
+			/**
+			*@brief Classe node que é a subclasse de list que irá representar os blocos de memória com o conteúdo da lista.
+			*@param T m_data: Conteúdo do bloco.
+			*@param	Node* m_next: ponteiro mostrando o local na memória onde está o proximo bloco.
+			*@param Node* m_prev: ponteiro mostrando o local na memória onde está o bloco anterior.
+			*/
 			class Node
 			{
 				public:
