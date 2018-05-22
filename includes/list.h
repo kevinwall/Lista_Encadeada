@@ -68,7 +68,7 @@ namespace sc
 				public:
 					T m_data;
 					Node* m_next;
-				//Node* m_prev
+					Node* m_prev;
 			};
 
 		private:
