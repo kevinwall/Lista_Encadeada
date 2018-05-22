@@ -74,7 +74,7 @@ namespace sc
 		private:
 			size_type m_size;
 			Node* m_head;
-			//Node & m_tail;
+			Node* m_tail;
 	};
 
 	#include "list.inl"
