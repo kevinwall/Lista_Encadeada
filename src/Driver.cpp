@@ -26,4 +26,21 @@ int main( void )
 	std::cout<<lista_copy.front()<<std::endl;
 	std::cout<<lista_copy.back()<<std::endl;
 	std::cout<<(lista_inicia == lista_inicia)<<std::endl;
+
+	/*
+	std::cout<<"dando push front"<<std::endl;
+	lista_copy.push_front(2);
+	std::cout<<"dando push back"<<std::endl;
+	lista_copy.push_back(8);
+
+	std::cout<<"dando pop front"<<std::endl;
+	lista_copy.pop_front();
+	std::cout<<"dando pop back"<<std::endl;
+	lista_copy.pop_back();
+
+	std::cout<<"dando o assign"<<std::endl;
+	lista_copy.assign(6);
+
+	std::cout<<(lista_copy != lista_copy)<<std::endl;
+	*/
 }

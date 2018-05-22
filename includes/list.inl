@@ -316,13 +316,16 @@ const T & list<T>::front() const
 	return (m_head->m_data);
 }
 
+/**
+*@brief Operador == utilizado para comparar as listas.
+*@param const list& rhs: Lista a ser comparada com a this.
+*/
 template<typename T>
 bool list<T>::operator==(const list& rhs )
 {
-	list<T>* rhs_atual_l;
-	rhs_atual_l = const_cast<list<T>*>(&rhs);
+	
 
-	if(this->m_size != rhs_atual_l->m_size)
+	if(this->m_size != rhs.m_size)
 	{
 		return false;
 	}
@@ -331,9 +334,10 @@ bool list<T>::operator==(const list& rhs )
 		Node* atual;
 		Node* rhs_atual;
 
+		rhs_atual = rhs.m_head;
 		atual = this->m_head;
 		
-		while(atual->m_next != nullptr)
+		while(atual != nullptr)
 		{
 			if(atual->m_data != rhs_atual->m_data)
 			{
@@ -344,15 +348,11 @@ bool list<T>::operator==(const list& rhs )
 			rhs_atual = rhs_atual->m_next;
 		}
 
-		if(atual->m_data != rhs_atual->m_data)
-		{
-			return false;
-		}
-
 		return true;
 	}
 }
 
+/*
 //Gegeo
 template <typename T>
 void list<T>::push_front(const T & value){
@@ -405,8 +405,8 @@ void list<T>::pop_front(){
 	Node * atual;
 
 	if(this->m_head != nullptr){
-		atual = (this->m_head)->m_next;
-		(this->m_head)->m_next = atual->m_next;
+		atual = this->m_next;
+		this->m_next = atual->m_next;
 		delete atual; 
 	}else{
 		atual = this->m_head;
@@ -419,7 +419,7 @@ void list<T>::assign( const T & value){
 	Node *atual = this->m_head;
 
 	while ( atual-> m_next != nullptr){
-		this->m_head = (this->m_head)->m_next;
+		this->m_head = this->m_next;
 		delete atual;
 		atual = this->m_head;
 	}
@@ -434,19 +434,20 @@ template <typename T>
 bool list<T>::operator !=( const list& rhs){
 	auto work ( rhs );
 
-	if(work.m_size != (this->m_head).m_size){
+	if(work.m_size != this->m_size){
 		return true;
 	}
 
 	if( work != nullptr){
 
-		if( work->m_data != (this->m_head)->m_data){
+		if( work->m_data != this->m_data){
 			return true;
 		}
 
 		work = work->m_next;
-		this->m_head = (this->m_head)->m_next;
+		this->m_head = this->m_next;
 	}
 
 	return false;
 }
+*/
