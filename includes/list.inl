@@ -283,7 +283,7 @@ void list<T>::clear()
 		}
 
 		delete fast;
-
+		this->m_tail = this->m_head;
 		std::cout<<this->m_head<<std::endl;
 	}
 }
