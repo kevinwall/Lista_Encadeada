@@ -211,3 +211,31 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 		throw std::runtime_error("Erro em operator=(): A lista encadeada e a lista inicializadora não possuem tamanho igual \n");
 	}
 }
+
+template <typename T>
+void list<T>::push_front(const T & value){
+	Node * atual = this->m_head;
+
+	atual->m_next = nullptr;
+	atual->m_data = value;
+	atual->m_next = this->m_head;
+	this->m_head = atual;
+
+}
+
+template <typename T>
+void list<T>::push_back(const T & value){
+	Node * atual = this->m_head;
+
+	if(this->m_head == nullptr){
+		this->m_head = atual;
+	}
+
+	Node * tail = this->m_head;
+
+	while( tail->m_next != nullptr){
+		tail = tail->m_next;
+	}
+
+	tail->m_data = value;
+}
