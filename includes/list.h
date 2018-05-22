@@ -7,14 +7,56 @@
 #include <initializer_list>
 #include <cstring>
 #include <utility>
-#include <vector>
-
+#include <iterator>
 
 namespace sc
 {
+	
+
+	/*
 	template<typename T>
+	class const_iterator
+			{
+				public:
+					const_iterator(T* ponteiro = nullptr) : m_const_element(ponteiro)
+					{
+						//Empty
+					}
+
+					const_iterator begin() const;
+
+					const_iterator end() const;
+
+					const_iterator operator++();
+
+					const_iterator operator++( iterator it);
+
+					const_iterator operator--();
+
+					const_iterator operator--( iterator it);
+
+					const_iterator operator*();
+
+					const_iterator operator==(iterator rhs);
+
+					const_iterator operator!=()iterator rhs;
+
+				private:
+					T* m_const_element;
+			};
+	*/
+	template<typename T>
+	/**
+	*@brief Classe lista que será implementada neste projeto.
+	*@param	size_type m_size: Tamanho de blocos da lista.
+	*@param	Node* m_head: Ponteiro para o primeiro bloco da lista.
+	*@param	Node* m_tail: Ponteiro para o ultimo bloco da lista.
+	*/
 	class list
 	{
+		/**
+		*@brief Alias para facilitar a manutenção da classe.
+		*/
 		typedef T value_type;
 		typedef size_t size_type;
 		typedef T* pointer;
@@ -63,18 +105,71 @@ namespace sc
 
 			bool operator!=(const list& rhs );
 
+			/**
+			*@brief Classe node que é a subclasse de list que irá representar os blocos de memória com o conteúdo da lista.
+			*@param T m_data: Conteúdo do bloco.
+			*@param	Node* m_next: ponteiro mostrando o local na memória onde está o proximo bloco.
+			*@param Node* m_prev: ponteiro mostrando o local na memória onde está o bloco anterior.
+			*/
 			class Node
 			{
 				public:
 					T m_data;
 					Node* m_next;
 					Node* m_prev;
+<<<<<<< HEAD
+=======
+
+					
+					Node(const T & d = T(), Node* p = nullptr, Node* n = nullptr) : m_data(d), m_next(n), m_prev(p)
+					{
+						//Empty
+					}
+					
+			};
+
+			class iterator
+			{
+	
+				public:
+
+					friend iterator(Node* ponteiro) : m_element(ponteiro)
+					{
+
+					}
+
+					friend iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
+					{
+						//Empty
+					}
+
+					friend iterator begin();
+
+					friend iterator end();
+
+					friend iterator operator++();
+
+					friend iterator operator++(T it);
+
+					friend iterator operator--();
+
+					friend iterator operator--(T it);
+
+					friend iterator operator*();
+
+					friend iterator operator==(iterator rhs);
+
+					friend iterator operator!=(iterator rhs);
+
+				private:
+					Node* m_element;
+>>>>>>> 586d4bef19d71b6884eb3411929f29da7f5e4348
 			};
 
 		private:
 			size_type m_size;
-			Node* m_head;
-			//Node & m_tail;
+			Node m_head;
+			Node m_tail;
 	};
 
 	#include "list.inl"

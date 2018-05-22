@@ -4,7 +4,7 @@
 *@brief Construtor defaut, que cria uma lista nula.
 */
 template<typename T>
-list<T>::list( void ) : m_head(nullptr), m_size(0)
+list<T>::list( void ) : m_size(0), m_head(), m_tail()
 {
 	/*Empty*/
 }
@@ -31,15 +31,62 @@ list<T>::list(typename list<T>::size_type count )
 		{
 			atual = new_node;
 			prev = atual;
-			this->m_head = atual;
+			m_head.m_next = atual;
 		}
 		else
 		{
 			atual = new_node;
 			prev->m_next = atual;
+			atual->m_prev = prev;
 			prev = prev->m_next;
 		}
 	}
+
+	prev->m_next = nullptr;
+	m_tail.m_prev = prev;
+	prev = m_head.m_next;
+	prev->m_prev = nullptr;
+}
+
+/**
+*@brief Construtor range que recebe um intervalo para inserir na lista.
+*@param InputIt first: Início do intervalo a ser inserido.
+*@param InputIt last: Final do intervalo a ser inserido.
+*/
+template<typename T>
+template< typename InputIt >
+list<T>::list( InputIt first, InputIt last )
+{
+	Node* atual;
+	Node* prev;
+	InputIt first_f = first;
+
+	while(first_f != last)
+	{
+		Node* new_node = new Node;
+
+		if(first == first_f)
+		{
+			m_head.m_next = new_node;
+			atual = new_node;
+			atual->m_data = *first_f;
+
+			first_f++;
+		}
+		else
+		{
+			prev = atual;
+			atual->m_next = new_node;
+			atual = atual->m_next;
+			atual->m_prev = prev;
+
+			atual->m_data = *first_f;
+
+			first_f++;
+		}
+	}
+
+	m_tail.m_prev = atual;
 }
 
 /**
@@ -56,26 +103,41 @@ list<T>::list( const list& other )
 
 	Node* origin; 
 	Node* copy;
-	origin = ponteiro->m_head;
+	Node* prev;
+	origin = ponteiro->m_head.m_next;
 
 	//EXPERIMENTAL.
 	Node* node_principal = new Node;
 	copy = node_principal;
-	this->m_head = copy;
+	m_head.m_next = copy;
 
 	while(origin->m_next != nullptr)
 	{
 
 		Node* new_node = new Node;
+		prev = copy;
 
 		copy->m_data = origin->m_data;
 		copy->m_next = new_node;
 
-		copy = copy->m_next;
-		origin = origin->m_next;
+
+		if(copy == m_head.m_next)
+		{
+			copy->m_prev = nullptr;
+			copy = copy->m_next;
+			origin = origin->m_next;
+		}
+		else
+		{
+			copy = copy->m_next;
+			origin = origin->m_next;
+			copy->m_prev = prev;
+		}
 	}
 	
 	copy->m_data = origin->m_data;
+	copy->m_prev = prev;
+	m_tail.m_prev = copy;
 
 }
 
@@ -88,6 +150,7 @@ list<T>::list( std::initializer_list<T> ilist )
 {
 	Node* prev;
 	Node* atual;
+	Node* prev_2;
 
 	int *i;
 
@@ -101,9 +164,9 @@ list<T>::list( std::initializer_list<T> ilist )
 			atual->m_data = *i;
 
 			prev = atual;
-			this->m_head = atual;
+			m_head.m_next = atual;
 			this->m_size = ilist.size();
-
+			atual->m_prev = nullptr;
 		}
 		else
 		{
@@ -111,20 +174,29 @@ list<T>::list( std::initializer_list<T> ilist )
 			atual->m_data = *i;
 
 			prev->m_next = atual;
+			prev_2 = prev;
 			prev = prev->m_next;
+			prev->m_prev = prev_2;
 		}
 	}
+
+	prev->m_prev = prev_2;
+	prev->m_next = nullptr;
+	m_tail.m_prev = prev;
 }
 
+/**
+*@brief Destrutor da classe.
+*/
 template<typename T>
 list<T>::~list()
 {
 	Node* atual;
 	Node* prev;
 
-	if( this->m_head != nullptr)
+	if( m_head.m_next != nullptr)
 	{
-		atual = this->m_head;
+		atual = m_head.m_next;
 
 		while(atual->m_next != nullptr)
 		{
@@ -155,8 +227,8 @@ list<T> & list<T>::operator=( const list& other )
 		Node* atual; 
 		Node* prev;
 
-		atual = this->m_head;
-		prev = ponteiro->m_head;
+		atual = m_head.m_next;
+		prev = ponteiro->m_head.m_next;
 
 		while(prev->m_next != nullptr)
 		{
@@ -166,14 +238,57 @@ list<T> & list<T>::operator=( const list& other )
 		}
 
 		atual->m_data = prev->m_data;
-
-		return *this;
-
+		m_tail.m_prev = atual;
 	}
 	else
 	{
-		throw std::runtime_error("Erro em operator=(): As listas encadeadas não possuem tamanho igual \n");
+		clear();
+
+		list<T> *ponteiro;
+		ponteiro = const_cast<list<T>*>(&other);
+
+		this->m_size = ponteiro->m_size;
+
+		Node* origin; 
+		Node* copy;
+		Node* prev;
+		origin = ponteiro->m_head.m_next;
+
+		//EXPERIMENTAL.
+		Node* node_principal = new Node;
+		copy = node_principal;
+		m_head.m_next = copy;
+
+		while(origin->m_next != nullptr)
+		{
+
+			Node* new_node = new Node;
+			prev = copy;
+
+			copy->m_data = origin->m_data;
+			copy->m_next = new_node;
+
+
+			if(copy == m_head.m_next)
+			{
+				copy->m_prev = nullptr;
+				copy = copy->m_next;
+				origin = origin->m_next;
+			}
+			else
+			{
+				copy = copy->m_next;
+				origin = origin->m_next;
+				copy->m_prev = prev;
+			}
+		}
+	
+		copy->m_data = origin->m_data;
+		copy->m_prev = prev;
+		m_tail.m_prev = copy;
 	}
+
+	return *this;
 }
 
 /**
@@ -186,8 +301,9 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 	if(this->m_size == ilist.size())
 	{
 		Node* atual;
+		Node* prev;
 
-		atual = this->m_head;
+		atual = m_head.m_next;
 
 		int* i;
 
@@ -195,21 +311,257 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		while(atual->m_next != nullptr)
 		{
+			prev = atual;
 			atual->m_data = *i;
 
 			atual= atual->m_next;
+			atual->m_prev = prev;
 			i++;
 		
 		}
 
+		atual->m_prev = prev;
 		atual->m_data = *i;
-
-		return *this;
+		m_tail.m_prev = atual;
 	}
 	else
 	{
-		throw std::runtime_error("Erro em operator=(): A lista encadeada e a lista inicializadora não possuem tamanho igual \n");
+		clear();
+
+		Node* prev;
+		Node* atual;
+		Node* prev_2;
+
+		int *i;
+
+		for(i = (int*)ilist.begin(); i < (int*)ilist.end(); i++)
+		{
+			Node* new_node = new Node;
+
+			if(i == ilist.begin())
+			{
+				atual = new_node;
+				atual->m_data = *i;
+
+				prev = atual;
+				m_head.m_next = atual;
+				this->m_size = ilist.size();
+				atual->m_prev = nullptr;
+			}
+			else
+			{
+				atual = new_node;
+				atual->m_data = *i;
+
+				prev->m_next = atual;
+				prev_2 = prev;
+				prev = prev->m_next;
+				prev->m_prev = prev_2;
+			}
+		}
+
+		prev->m_prev = prev_2;
+		prev->m_next = nullptr;
+		m_tail.m_prev = prev;
+
 	}
+	
+	return *this;
+}
+
+/**
+*@brief Função size que retorna a quantidade de nodes(blocos com informação) existentes na lista.
+*/
+template<typename T>
+typename list<T>::size_type list<T>::size() const
+{
+	return this->m_size;
+}
+
+/**
+*@brief Função clear que limpa (Fisicamente) a lista.
+*/
+template<typename T>
+void list<T>::clear()
+{
+	if(m_head.m_next != nullptr)
+	{
+		Node* fast;
+		Node* slow;
+		fast = m_head.m_next;
+
+		while(fast->m_next != nullptr)
+		{
+			slow = fast;
+			fast = fast->m_next;
+
+			if(slow != m_head.m_next)
+			{
+				delete slow;
+			}
+			else
+			{
+				slow->m_data.~T();
+				slow->m_next = nullptr;
+			}
+			
+		}
+
+		delete fast;
+		m_tail.m_prev = m_head.m_next;
+	}
+}
+
+/**
+*@brief Função empty, que retorna true caso a lista seja vazia e false caso contrário.
+*/
+template<typename T>
+bool list<T>::empty()
+{
+	return (this->m_size == 0);
+}
+
+
+/**
+*@brief Função back, que retorna o ultimo objeto da lista.
+*/
+template<typename T>
+const T & list<T>::back() const
+{
+	return (m_tail.m_prev->m_data);
+}
+
+/**
+*@brief Função front, que retorna o primeiro objeto da lista.
+*/
+template<typename T>
+const T & list<T>::front() const
+{
+	return (m_head.m_next->m_data);
+}
+
+/**
+*@brief Operador == utilizado para comparar as listas.
+*@param const list& rhs: Lista a ser comparada com a this.
+*/
+template<typename T>
+bool list<T>::operator==(const list& rhs )
+{
+	
+
+	if(this->m_size != rhs.m_size)
+	{
+		return false;
+	}
+	else
+	{
+		Node* atual;
+		Node* rhs_atual;
+
+		rhs_atual = rhs.m_head.m_next;
+		atual = m_head.m_next;
+		
+		while(atual != nullptr)
+		{
+			if(atual->m_data != rhs_atual->m_data)
+			{
+				return false;
+			}
+
+			atual = atual->m_next;
+			rhs_atual = rhs_atual->m_next;
+		}
+
+		return true;
+	}
+}
+
+/*
+//Gegeo
+template <typename T>
+void list<T>::push_front(const T & value){
+	Node * atual = this->m_head;
+
+	atual->m_next = nullptr;
+	atual->m_data = value;
+	atual->m_next = this->m_head;
+	this->m_head = atual;
+
+}
+
+template <typename T>
+void list<T>::push_back(const T & value){
+	Node * atual = this->m_head;
+
+	if(this->m_head == nullptr){
+		this->m_head = atual;
+	}
+
+	Node * tail = this->m_head;
+
+	while( tail->m_next != nullptr){
+		tail = tail->m_next;
+	}
+
+	tail->m_data = value;
+}
+
+template <typename T>
+void list<T>::pop_back(){
+	Node * atual;
+
+	if(this->m_head == nullptr){
+		this->m_head = atual;
+		delete atual;
+	}
+
+	Node * tail = this->m_head;
+
+	while( tail->m_next != nullptr){
+		tail = tail->m_next;
+	}
+
+	delete tail;
+}
+
+template <typename T>
+void list<T>::pop_front(){
+	Node * atual;
+
+	if(this->m_head != nullptr){
+		atual = this->m_next;
+		this->m_next = atual->m_next;
+		delete atual; 
+	}else{
+		atual = this->m_head;
+		delete atual;
+	}
+}
+
+template <typename T>
+void list<T>::assign( const T & value){
+	Node *atual = this->m_head;
+
+	while ( atual-> m_next != nullptr){
+		this->m_head = this->m_next;
+		delete atual;
+		atual = this->m_head;
+	}
+
+	while ( atual -> m_next != nullptr){
+		atual -> m_data = value;
+		atual = atual ->m_next;
+	}
+}
+
+template <typename T>
+bool list<T>::operator !=( const list& rhs){
+	auto work ( rhs );
+
+	if(work.m_size != this->m_size){
+		return true;
+	}
+<<<<<<< HEAD
 }
 
 template <typename T>
@@ -307,4 +659,112 @@ bool list<T>::operator !=( const list& rhs){
 	}
 
 	return false;
+=======
+
+	if( work != nullptr){
+
+		if( work->m_data != this->m_data){
+			return true;
+		}
+
+		work = work->m_next;
+		this->m_head = this->m_next;
+	}
+
+	return false;
+}
+*/
+
+/**
+*@brief Função begin do iterator.
+*/
+template <typename T>
+friend typename list<T>::iterator list<T>::iterator::begin()
+{
+	return iterator(m_head.m_next);
+}
+
+/**
+*@brief Função end do iterator.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::end()
+{
+	return iterator(m_tail.m_prev);
+}
+
+/**
+*@brief Operador ++ do iterator (it++).
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator++()
+{
+	iterator temp(this);
+
+	this = this->m_next;
+
+	return temp;
+}
+
+/**
+*@brief Operador ++ do iterator (++it).
+*@param iterator it: iterador que será avançado. 
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator++(T it)
+{
+	return (it->m_next);
+}
+
+/**
+*@brief Operador -- do iterator (it--).
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator--()
+{
+	iterator temp(this);
+
+	this = this->m_prev;
+
+	return temp;
+}
+
+/**
+*@brief Operador -- do iterator (--it).
+*@param iterator it: iterador a ser regredido.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator--(T it)
+{
+	return (this->m_prev);
+}
+
+/**
+*@brief Operador * do iterator, que retorna o valor armazenado na posição do iterador.
+*/
+template <typename T>
+friend typename list<T>::iterator list<T>::iterator::operator*()
+{
+	return (this->m_data);
+}
+
+/**
+*@brief Operador == do iterator, que compara os valores dos iteradores e veem se são iguais.
+*@param iterator rhs: segundo iterador para comparar com o this.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
+{
+	return (this == rhs);
+}
+
+/**
+*@brief Operador != do iterator, que compara os valores dos iteradores e veem se são diferentes.
+*@param iterator rhs: segundo iterador para comparar com o this.
+*/
+template<typename T>
+friend typename list<T>::iterator list<T>::iterator::operator!=(iterator rhs)
+{
+	return (this != rhs);
+>>>>>>> 586d4bef19d71b6884eb3411929f29da7f5e4348
 }
