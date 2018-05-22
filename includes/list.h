@@ -68,13 +68,13 @@ namespace sc
 				public:
 					T m_data;
 					Node* m_next;
-				//Node* m_prev
+					Node* m_prev;
 			};
 
 		private:
 			size_type m_size;
 			Node* m_head;
-			//Node & m_tail;
+			Node* m_tail;
 	};
 
 	#include "list.inl"

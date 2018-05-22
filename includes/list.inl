@@ -4,7 +4,7 @@
 *@brief Construtor defaut, que cria uma lista nula.
 */
 template<typename T>
-list<T>::list( void ) : m_head(nullptr), m_size(0)
+list<T>::list( void ) : m_head(nullptr), m_size(0), m_tail(nullptr)
 {
 	/*Empty*/
 }
@@ -37,9 +37,15 @@ list<T>::list(typename list<T>::size_type count )
 		{
 			atual = new_node;
 			prev->m_next = atual;
+			atual->m_prev = prev;
 			prev = prev->m_next;
 		}
 	}
+
+	prev->m_next = nullptr;
+	this->m_tail = prev;
+	prev = this->m_head;
+	prev->m_prev = nullptr;
 }
 
 /**
@@ -56,6 +62,7 @@ list<T>::list( const list& other )
 
 	Node* origin; 
 	Node* copy;
+	Node* prev;
 	origin = ponteiro->m_head;
 
 	//EXPERIMENTAL.
@@ -67,15 +74,29 @@ list<T>::list( const list& other )
 	{
 
 		Node* new_node = new Node;
+		prev = copy;
 
 		copy->m_data = origin->m_data;
 		copy->m_next = new_node;
 
-		copy = copy->m_next;
-		origin = origin->m_next;
+
+		if(copy == this->m_head)
+		{
+			copy->m_prev = nullptr;
+			copy = copy->m_next;
+			origin = origin->m_next;
+		}
+		else
+		{
+			copy = copy->m_next;
+			origin = origin->m_next;
+			copy->m_prev = prev;
+		}
 	}
 	
 	copy->m_data = origin->m_data;
+	copy->m_prev = prev;
+	this->m_tail = copy;
 
 }
 
@@ -88,6 +109,7 @@ list<T>::list( std::initializer_list<T> ilist )
 {
 	Node* prev;
 	Node* atual;
+	Node* prev_2;
 
 	int *i;
 
@@ -103,7 +125,7 @@ list<T>::list( std::initializer_list<T> ilist )
 			prev = atual;
 			this->m_head = atual;
 			this->m_size = ilist.size();
-
+			atual->m_prev = nullptr;
 		}
 		else
 		{
@@ -111,11 +133,20 @@ list<T>::list( std::initializer_list<T> ilist )
 			atual->m_data = *i;
 
 			prev->m_next = atual;
+			prev_2 = prev;
 			prev = prev->m_next;
+			prev->m_prev = prev_2;
 		}
 	}
+
+	prev->m_prev = prev_2;
+	prev->m_next = nullptr;
+	this->m_tail = prev;
 }
 
+/**
+*@brief Destrutor da classe.
+*/
 template<typename T>
 list<T>::~list()
 {
@@ -211,3 +242,114 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 		throw std::runtime_error("Erro em operator=(): A lista encadeada e a lista inicializadora não possuem tamanho igual \n");
 	}
 }
+
+/**
+*@brief Função size que retorna a quantidade de nodes(blocos com informação) existentes na lista.
+*/
+template<typename T>
+typename list<T>::size_type list<T>::size() const
+{
+	return this->m_size;
+}
+
+/**
+*@brief Função clear que limpa (Fisicamente) a lista.
+*/
+template<typename T>
+void list<T>::clear()
+{
+	std::cout<<this->m_head<<std::endl;
+	if(this->m_head != nullptr)
+	{
+		Node* fast;
+		Node* slow;
+		fast = this->m_head;
+
+		while(fast->m_next != nullptr)
+		{
+			slow = fast;
+			fast = fast->m_next;
+
+			if(slow != this->m_head)
+			{
+				delete slow;
+			}
+			else
+			{
+				slow->m_data.~T();
+				slow->m_next = nullptr;
+			}
+			
+		}
+
+		delete fast;
+
+		std::cout<<this->m_head<<std::endl;
+	}
+}
+
+/**
+*@brief Função empty, que retorna true caso a lista seja vazia e false caso contrário.
+*/
+template<typename T>
+bool list<T>::empty()
+{
+	return (this->m_size == 0);
+}
+
+
+/**
+*@brief Função back, que retorna o ultimo objeto da lista.
+*/
+template<typename T>
+const T & list<T>::back() const
+{
+	return (m_tail->m_data);
+}
+
+/**
+*@brief Função front, que retorna o primeiro objeto da lista.
+*/
+template<typename T>
+const T & list<T>::front() const
+{
+	return (m_head->m_data);
+}
+
+template<typename T>
+bool list<T>::operator==(const list& rhs )
+{
+	list<T>* rhs_atual_l;
+	rhs_atual_l = const_cast<list<T>*>(&rhs);
+
+	if(this->m_size != rhs_atual_l->m_size)
+	{
+		return false;
+	}
+	else
+	{
+		Node* atual;
+		Node* rhs_atual;
+
+		atual = this->m_head;
+		
+		while(atual->m_next != nullptr)
+		{
+			if(atual->m_data != rhs_atual->m_data)
+			{
+				return false;
+			}
+
+			atual = atual->m_next;
+			rhs_atual = rhs_atual->m_next;
+		}
+
+		if(atual->m_data != rhs_atual->m_data)
+		{
+			return false;
+		}
+
+		return true;
+	}
+}
+

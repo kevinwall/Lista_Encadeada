@@ -11,8 +11,19 @@ int main( void )
 
 	lista_copy = {3, 6, 7}; //Operador com lista
 
+	/*
 	lista_def.~list();
 	lista_inicia.~list();
 	lista_copy.~list();
 	lista_count.~list();
+	*/
+
+	std::cout<<lista_inicia.size()<<std::endl;
+	std::cout<<"Limpando a lista..."<<std::endl;
+	lista_inicia.clear();
+	std::cout<<"Lista limpa"<<std::endl;
+	std::cout<<lista_def.empty()<<std::endl;
+	std::cout<<lista_copy.front()<<std::endl;
+	std::cout<<lista_copy.back()<<std::endl;
+	std::cout<<(lista_inicia == lista_inicia)<<std::endl;
 }
