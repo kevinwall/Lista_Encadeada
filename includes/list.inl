@@ -4,7 +4,7 @@
 *@brief Construtor defaut, que cria uma lista nula.
 */
 template<typename T>
-list<T>::list( void ) : m_head(nullptr), m_size(0), m_tail(nullptr)
+list<T>::list( void ) : m_size(0), m_head(nullptr), m_tail(nullptr)
 {
 	/*Empty*/
 }
