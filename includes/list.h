@@ -7,7 +7,6 @@
 #include <initializer_list>
 #include <cstring>
 #include <utility>
-#include <vector>
 
 
 namespace sc

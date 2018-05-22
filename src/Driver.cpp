@@ -2,12 +2,16 @@
 
 int main( void )
 {
+	int a[] = {1,2,3,4,5,6};
+
 	sc::list<int> lista_def; //Construtor default;
 	sc::list<int> lista_count(3); //Construtor count;
+	sc::list<int> lista_it(std::begin(a),std::end(a));
 	sc::list<int> lista_inicia({3,2,1}); //Construtor com lista inicializadora
 	sc::list<int> lista_copy(lista_inicia); //Construtor copy
-	sc::list<int> lista_op1 = lista_copy;
-	sc::list<int> lista_op2 = {1,2,3,4,5,6,7,8,9,10};
+	sc::list<int> lista_op1 = lista_copy; //Construtor atibuição com outra lista
+	sc::list<int> lista_op2 = {1,2,3,4,5,6,7,8,9,10}; //Construtor atribuição com uma lista inicializadora
+
 
 	lista_count = lista_inicia; //Operador com copy
 

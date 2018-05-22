@@ -49,6 +49,47 @@ list<T>::list(typename list<T>::size_type count )
 }
 
 /**
+*@brief Construtor range que recebe um intervalo para inserir na lista.
+*@param InputIt first: Início do intervalo a ser inserido.
+*@param InputIt last: Final do intervalo a ser inserido.
+*/
+template<typename T>
+template< typename InputIt >
+list<T>::list( InputIt first, InputIt last )
+{
+	Node* atual;
+	Node* prev;
+	InputIt first_f = first;
+
+	while(first_f != last)
+	{
+		Node* new_node = new Node;
+
+		if(first == first_f)
+		{
+			m_head.m_next = new_node;
+			atual = new_node;
+			atual->m_data = *first_f;
+
+			first_f++;
+		}
+		else
+		{
+			prev = atual;
+			atual->m_next = new_node;
+			atual = atual->m_next;
+			atual->m_prev = prev;
+
+			atual->m_data = *first_f;
+
+			first_f++;
+		}
+	}
+
+	m_tail.m_prev = atual;
+}
+
+/**
 *@brief Construtor Cópia que cria uma "cópia profunda" de outra lista passada como parâmetro.
 *@param const list& other: Referência para a lista que se deseja copiar.
 */
