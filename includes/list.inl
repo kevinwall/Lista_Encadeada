@@ -46,6 +46,7 @@ list<T>::list(typename list<T>::size_type count )
 	m_tail.m_prev = prev;
 	prev = m_head.m_next;
 	prev->m_prev = nullptr;
+
 }
 
 /**
@@ -384,7 +385,6 @@ typename list<T>::size_type list<T>::size() const
 template<typename T>
 void list<T>::clear()
 {
-	std::cout<<m_head.m_next<<std::endl;
 	if(m_head.m_next != nullptr)
 	{
 		Node* fast;
@@ -410,7 +410,6 @@ void list<T>::clear()
 
 		delete fast;
 		m_tail.m_prev = m_head.m_next;
-		std::cout<<m_head.m_next<<std::endl;
 	}
 }
 
