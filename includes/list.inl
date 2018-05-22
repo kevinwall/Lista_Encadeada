@@ -577,6 +577,14 @@ bool list<T>::operator !=( const list& rhs){
 */
 
 /**
+*@brief Método para printar o iterator atual.
+*/
+template<typename T>
+void list<T>::iterator::print()
+{
+	std::cout<<"Valor do iterator: "<<m_element<<std::endl;
+}
+/**
 *@brief Função begin do iterator.
 */
 template <typename T>
@@ -600,11 +608,9 @@ typename list<T>::iterator list<T>::end()
 template<typename T>
 typename list<T>::iterator list<T>::iterator::operator++()
 {
-	iterator temp(this);
+	m_element = m_element->m_next;
 
-	this = this->m_next;
-
-	return temp;
+	return *this;
 }
 
 /**
@@ -614,7 +620,11 @@ typename list<T>::iterator list<T>::iterator::operator++()
 template<typename T>
 typename list<T>::iterator list<T>::iterator::operator++(int)
 {
-	return (it->m_next);
+	auto it = *this;
+
+	m_element = m_element->m_next;
+
+	return it;
 }
 
 /**
@@ -623,11 +633,9 @@ typename list<T>::iterator list<T>::iterator::operator++(int)
 template<typename T>
 typename list<T>::iterator list<T>::iterator::operator--()
 {
-	iterator temp(this);
+	m_element = m_element->m_prev;
 
-	this = this->m_prev;
-
-	return temp;
+	return *this;
 }
 
 /**
@@ -637,16 +645,20 @@ typename list<T>::iterator list<T>::iterator::operator--()
 template<typename T>
 typename list<T>::iterator list<T>::iterator::operator--(int)
 {
-	return (this->m_prev);
+	auto it = *this;
+
+	m_element = m_element->m_prev;
+
+	return it;
 }
 
 /**
 *@brief Operador * do iterator, que retorna o valor armazenado na posição do iterador.
 */
 template <typename T>
-typename list<T>::iterator list<T>::iterator::operator*()
+T& list<T>::iterator::operator*()
 {
-	return (this->m_data);
+	return this->m_element->m_data;
 }
 
 /**
@@ -656,7 +668,7 @@ typename list<T>::iterator list<T>::iterator::operator*()
 template<typename T>
 typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
 {
-	return (this == rhs);
+	return (this->m_element == rhs.m_element);
 }
 
 /**
@@ -666,5 +678,5 @@ typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
 template<typename T>
 typename list<T>::iterator list<T>::iterator::operator!=(iterator rhs)
 {
-	return (this != rhs);
+	return (this->m_element != rhs.m_element);
 }

@@ -138,14 +138,15 @@ namespace sc
 
 					iterator(Node* ponteiro) : m_element(ponteiro)
 					{
-						std::cout<<m_element<<std::endl;
+						//Empty
 					}
 
 					iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
 					{
 						//Empty
-						std::cout<<m_element<<std::endl;
 					}
+
+					void print();
 
 					iterator operator++();
 
@@ -155,13 +156,15 @@ namespace sc
 
 					iterator operator--(int);
 
-					iterator operator*();
+					T& operator*();
 
 					iterator operator==(iterator rhs);
 
 					iterator operator!=(iterator rhs);
 
 				private:
+					friend class list<T>;
+					Node* atual;
 					Node* m_element;
 			};
 
