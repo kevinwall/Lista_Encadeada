@@ -353,3 +353,100 @@ bool list<T>::operator==(const list& rhs )
 	}
 }
 
+//Gegeo
+template <typename T>
+void list<T>::push_front(const T & value){
+	Node * atual = this->m_head;
+
+	atual->m_next = nullptr;
+	atual->m_data = value;
+	atual->m_next = this->m_head;
+	this->m_head = atual;
+
+}
+
+template <typename T>
+void list<T>::push_back(const T & value){
+	Node * atual = this->m_head;
+
+	if(this->m_head == nullptr){
+		this->m_head = atual;
+	}
+
+	Node * tail = this->m_head;
+
+	while( tail->m_next != nullptr){
+		tail = tail->m_next;
+	}
+
+	tail->m_data = value;
+}
+
+template <typename T>
+void list<T>::pop_back(){
+	Node * atual;
+
+	if(this->m_head == nullptr){
+		this->m_head = atual;
+		delete atual;
+	}
+
+	Node * tail = this->m_head;
+
+	while( tail->m_next != nullptr){
+		tail = tail->m_next;
+	}
+
+	delete tail;
+}
+
+template <typename T>
+void list<T>::pop_front(){
+	Node * atual;
+
+	if(this->m_head != nullptr){
+		atual = (this->m_head)->m_next;
+		(this->m_head)->m_next = atual->m_next;
+		delete atual; 
+	}else{
+		atual = this->m_head;
+		delete atual;
+	}
+}
+
+template <typename T>
+void list<T>::assign( const T & value){
+	Node *atual = this->m_head;
+
+	while ( atual-> m_next != nullptr){
+		this->m_head = (this->m_head)->m_next;
+		delete atual;
+		atual = this->m_head;
+	}
+
+	while ( atual -> m_next != nullptr){
+		atual -> m_data = value;
+		atual = atual ->m_next;
+	}
+}
+
+template <typename T>
+bool list<T>::operator !=( const list& rhs){
+	auto work ( rhs );
+
+	if(work.m_size != (this->m_head).m_size){
+		return true;
+	}
+
+	if( work != nullptr){
+
+		if( work->m_data != (this->m_head)->m_data){
+			return true;
+		}
+
+		work = work->m_next;
+		this->m_head = (this->m_head)->m_next;
+	}
+
+	return false;
+}
