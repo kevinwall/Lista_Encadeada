@@ -4,7 +4,7 @@
 *@brief Construtor defaut, que cria uma lista nula.
 */
 template<typename T>
-list<T>::list( void ) : m_size(0), m_head(nullptr), m_tail(nullptr)
+list<T>::list( void ) : m_size(0), m_head(), m_tail()
 {
 	/*Empty*/
 }
@@ -31,7 +31,7 @@ list<T>::list(typename list<T>::size_type count )
 		{
 			atual = new_node;
 			prev = atual;
-			this->m_head = atual;
+			m_head.m_next = atual;
 		}
 		else
 		{
@@ -43,8 +43,8 @@ list<T>::list(typename list<T>::size_type count )
 	}
 
 	prev->m_next = nullptr;
-	this->m_tail = prev;
-	prev = this->m_head;
+	m_tail.m_prev = prev;
+	prev = m_head.m_next;
 	prev->m_prev = nullptr;
 }
 
@@ -63,12 +63,12 @@ list<T>::list( const list& other )
 	Node* origin; 
 	Node* copy;
 	Node* prev;
-	origin = ponteiro->m_head;
+	origin = ponteiro->m_head.m_next;
 
 	//EXPERIMENTAL.
 	Node* node_principal = new Node;
 	copy = node_principal;
-	this->m_head = copy;
+	m_head.m_next = copy;
 
 	while(origin->m_next != nullptr)
 	{
@@ -80,7 +80,7 @@ list<T>::list( const list& other )
 		copy->m_next = new_node;
 
 
-		if(copy == this->m_head)
+		if(copy == m_head.m_next)
 		{
 			copy->m_prev = nullptr;
 			copy = copy->m_next;
@@ -96,7 +96,7 @@ list<T>::list( const list& other )
 	
 	copy->m_data = origin->m_data;
 	copy->m_prev = prev;
-	this->m_tail = copy;
+	m_tail.m_prev = copy;
 
 }
 
@@ -123,7 +123,7 @@ list<T>::list( std::initializer_list<T> ilist )
 			atual->m_data = *i;
 
 			prev = atual;
-			this->m_head = atual;
+			m_head.m_next = atual;
 			this->m_size = ilist.size();
 			atual->m_prev = nullptr;
 		}
@@ -141,7 +141,7 @@ list<T>::list( std::initializer_list<T> ilist )
 
 	prev->m_prev = prev_2;
 	prev->m_next = nullptr;
-	this->m_tail = prev;
+	m_tail.m_prev = prev;
 }
 
 /**
@@ -153,9 +153,9 @@ list<T>::~list()
 	Node* atual;
 	Node* prev;
 
-	if( this->m_head != nullptr)
+	if( m_head.m_next != nullptr)
 	{
-		atual = this->m_head;
+		atual = m_head.m_next;
 
 		while(atual->m_next != nullptr)
 		{
@@ -186,8 +186,8 @@ list<T> & list<T>::operator=( const list& other )
 		Node* atual; 
 		Node* prev;
 
-		atual = this->m_head;
-		prev = ponteiro->m_head;
+		atual = m_head.m_next;
+		prev = ponteiro->m_head.m_next;
 
 		while(prev->m_next != nullptr)
 		{
@@ -197,7 +197,7 @@ list<T> & list<T>::operator=( const list& other )
 		}
 
 		atual->m_data = prev->m_data;
-		this->m_tail = atual;
+		m_tail.m_prev = atual;
 	}
 	else
 	{
@@ -211,12 +211,12 @@ list<T> & list<T>::operator=( const list& other )
 		Node* origin; 
 		Node* copy;
 		Node* prev;
-		origin = ponteiro->m_head;
+		origin = ponteiro->m_head.m_next;
 
 		//EXPERIMENTAL.
 		Node* node_principal = new Node;
 		copy = node_principal;
-		this->m_head = copy;
+		m_head.m_next = copy;
 
 		while(origin->m_next != nullptr)
 		{
@@ -228,7 +228,7 @@ list<T> & list<T>::operator=( const list& other )
 			copy->m_next = new_node;
 
 
-			if(copy == this->m_head)
+			if(copy == m_head.m_next)
 			{
 				copy->m_prev = nullptr;
 				copy = copy->m_next;
@@ -244,7 +244,7 @@ list<T> & list<T>::operator=( const list& other )
 	
 		copy->m_data = origin->m_data;
 		copy->m_prev = prev;
-		this->m_tail = copy;
+		m_tail.m_prev = copy;
 	}
 
 	return *this;
@@ -262,7 +262,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 		Node* atual;
 		Node* prev;
 
-		atual = this->m_head;
+		atual = m_head.m_next;
 
 		int* i;
 
@@ -281,7 +281,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		atual->m_prev = prev;
 		atual->m_data = *i;
-		this->m_tail = atual;
+		m_tail.m_prev = atual;
 	}
 	else
 	{
@@ -303,7 +303,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 				atual->m_data = *i;
 
 				prev = atual;
-				this->m_head = atual;
+				m_head.m_next = atual;
 				this->m_size = ilist.size();
 				atual->m_prev = nullptr;
 			}
@@ -321,7 +321,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		prev->m_prev = prev_2;
 		prev->m_next = nullptr;
-		this->m_tail = prev;
+		m_tail.m_prev = prev;
 
 	}
 	
@@ -343,19 +343,19 @@ typename list<T>::size_type list<T>::size() const
 template<typename T>
 void list<T>::clear()
 {
-	std::cout<<this->m_head<<std::endl;
-	if(this->m_head != nullptr)
+	std::cout<<m_head.m_next<<std::endl;
+	if(m_head.m_next != nullptr)
 	{
 		Node* fast;
 		Node* slow;
-		fast = this->m_head;
+		fast = m_head.m_next;
 
 		while(fast->m_next != nullptr)
 		{
 			slow = fast;
 			fast = fast->m_next;
 
-			if(slow != this->m_head)
+			if(slow != m_head.m_next)
 			{
 				delete slow;
 			}
@@ -368,8 +368,8 @@ void list<T>::clear()
 		}
 
 		delete fast;
-		this->m_tail = this->m_head;
-		std::cout<<this->m_head<<std::endl;
+		m_tail.m_prev = m_head.m_next;
+		std::cout<<m_head.m_next<<std::endl;
 	}
 }
 
@@ -389,7 +389,7 @@ bool list<T>::empty()
 template<typename T>
 const T & list<T>::back() const
 {
-	return (m_tail->m_data);
+	return (m_tail.m_prev->m_data);
 }
 
 /**
@@ -398,7 +398,7 @@ const T & list<T>::back() const
 template<typename T>
 const T & list<T>::front() const
 {
-	return (m_head->m_data);
+	return (m_head.m_next->m_data);
 }
 
 /**
@@ -419,8 +419,8 @@ bool list<T>::operator==(const list& rhs )
 		Node* atual;
 		Node* rhs_atual;
 
-		rhs_atual = rhs.m_head;
-		atual = this->m_head;
+		rhs_atual = rhs.m_head.m_next;
+		atual = m_head.m_next;
 		
 		while(atual != nullptr)
 		{
