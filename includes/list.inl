@@ -580,7 +580,7 @@ bool list<T>::operator !=( const list& rhs){
 *@brief Função begin do iterator.
 */
 template <typename T>
-friend typename list<T>::iterator list<T>::iterator::begin()
+typename list<T>::iterator list<T>::begin()
 {
 	return iterator(m_head.m_next);
 }
@@ -589,7 +589,7 @@ friend typename list<T>::iterator list<T>::iterator::begin()
 *@brief Função end do iterator.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::end()
+typename list<T>::iterator list<T>::end()
 {
 	return iterator(m_tail.m_prev);
 }
@@ -598,7 +598,7 @@ friend typename list<T>::iterator list<T>::iterator::end()
 *@brief Operador ++ do iterator (it++).
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator++()
+typename list<T>::iterator list<T>::iterator::operator++()
 {
 	iterator temp(this);
 
@@ -612,7 +612,7 @@ friend typename list<T>::iterator list<T>::iterator::operator++()
 *@param iterator it: iterador que será avançado. 
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator++(T it)
+typename list<T>::iterator list<T>::iterator::operator++(int)
 {
 	return (it->m_next);
 }
@@ -621,7 +621,7 @@ friend typename list<T>::iterator list<T>::iterator::operator++(T it)
 *@brief Operador -- do iterator (it--).
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator--()
+typename list<T>::iterator list<T>::iterator::operator--()
 {
 	iterator temp(this);
 
@@ -635,7 +635,7 @@ friend typename list<T>::iterator list<T>::iterator::operator--()
 *@param iterator it: iterador a ser regredido.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator--(T it)
+typename list<T>::iterator list<T>::iterator::operator--(int)
 {
 	return (this->m_prev);
 }
@@ -644,7 +644,7 @@ friend typename list<T>::iterator list<T>::iterator::operator--(T it)
 *@brief Operador * do iterator, que retorna o valor armazenado na posição do iterador.
 */
 template <typename T>
-friend typename list<T>::iterator list<T>::iterator::operator*()
+typename list<T>::iterator list<T>::iterator::operator*()
 {
 	return (this->m_data);
 }
@@ -654,7 +654,7 @@ friend typename list<T>::iterator list<T>::iterator::operator*()
 *@param iterator rhs: segundo iterador para comparar com o this.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
+typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
 {
 	return (this == rhs);
 }
@@ -664,7 +664,7 @@ friend typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
 *@param iterator rhs: segundo iterador para comparar com o this.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator!=(iterator rhs)
+typename list<T>::iterator list<T>::iterator::operator!=(iterator rhs)
 {
 	return (this != rhs);
 }

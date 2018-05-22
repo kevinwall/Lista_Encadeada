@@ -131,37 +131,43 @@ namespace sc
 	
 				public:
 
-					friend iterator(Node* ponteiro) : m_element(ponteiro)
-					{
-
-					}
-
-					friend iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
+					iterator( void ) : m_element(nullptr)
 					{
 						//Empty
 					}
 
-					friend iterator begin();
+					iterator(Node* ponteiro) : m_element(ponteiro)
+					{
+						std::cout<<m_element<<std::endl;
+					}
 
-					friend iterator end();
+					iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
+					{
+						//Empty
+						std::cout<<m_element<<std::endl;
+					}
 
-					friend iterator operator++();
+					iterator operator++();
 
-					friend iterator operator++(T it);
+					iterator operator++(int);
 
-					friend iterator operator--();
+					iterator operator--();
 
-					friend iterator operator--(T it);
+					iterator operator--(int);
 
-					friend iterator operator*();
+					iterator operator*();
 
-					friend iterator operator==(iterator rhs);
+					iterator operator==(iterator rhs);
 
-					friend iterator operator!=(iterator rhs);
+					iterator operator!=(iterator rhs);
 
 				private:
 					Node* m_element;
 			};
+
+			iterator begin();
+
+			iterator end();
 
 		private:
 			size_type m_size;

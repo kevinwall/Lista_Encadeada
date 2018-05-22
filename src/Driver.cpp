@@ -35,16 +35,16 @@ int main( void )
 	std::cout<<lista_copy.back()<<std::endl;
 	std::cout<<(lista_inicia == lista_inicia)<<std::endl;
 
+	
+	lista_copy.begin();
+	lista_copy.end();
 	/*
-	std::cout<<lista_copy_it.begin()<<std::endl;
-	std::cout<<lista_copy_it.end()<<std::endl;
 	std::cout<<(lista_copy_it.begin())*<<std::endl;
 	std::cout<<(lista_copy_it.begin() == lista_copy_it.begin())<<std::endl;
 	std::cout<<(lista_copy_it.begin() != lista_copy_it.begin())<<std::endl;
 	std::cout<<(lista_copy_it.begin())++<<std::endl;
 	std::cout<<(lista_copy_it.begin())--<<std::endl;
 	*/
-
 	/*
 	std::cout<<"dando push front"<<std::endl;
 	lista_copy.push_front(2);
