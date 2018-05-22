@@ -197,6 +197,7 @@ list<T> & list<T>::operator=( const list& other )
 		}
 
 		atual->m_data = prev->m_data;
+		this->m_tail = atual;
 	}
 	else
 	{
@@ -280,6 +281,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		atual->m_prev = prev;
 		atual->m_data = *i;
+		this->m_tail = atual;
 	}
 	else
 	{
