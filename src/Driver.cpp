@@ -25,7 +25,11 @@ int main( void )
 	*/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 	sc::list<int>::iterator lista_copy_it = lista_copy;
+=======
+	sc::list<int>::iterator lista_copy_it = lista_op2;
+>>>>>>> c78de2f1717583f6d53d87ba97d0e7f52e1b84a8
 
 =======
 >>>>>>> Beta
@@ -38,6 +42,7 @@ int main( void )
 	std::cout<<lista_copy.back()<<std::endl;
 	std::cout<<(lista_inicia == lista_inicia)<<std::endl;
 
+<<<<<<< HEAD
 	/*
 <<<<<<< HEAD
 	std::cout<<lista_copy_it.begin()<<std::endl;
@@ -49,6 +54,13 @@ int main( void )
 	std::cout<<(lista_copy_it.begin())--<<std::endl;
 	*/
 
+=======
+	
+	(lista_copy.begin()).print();
+	(lista_copy.end()).print();
+	(lista_copy_it).print();
+	std::cout<<*(lista_copy_it)<<std::endl;
+>>>>>>> c78de2f1717583f6d53d87ba97d0e7f52e1b84a8
 	/*
 =======
 >>>>>>> Beta

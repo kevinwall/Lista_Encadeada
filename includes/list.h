@@ -140,15 +140,15 @@ namespace sc
 
 				const_iterator &operator++();
 
-				//const_iterator operator++(int);
+				const_iterator operator++(int);
 
-				//const_iterator &operator--();
+				const_iterator &operator--();
 
-				//const_iterator operator--(int):
+				const_iterator operator--(int):
 
-				//bool operator==(const_iterator &rhs);
+				bool operator==(const_iterator &rhs);
 
-				//bool operator!=(const_iterator &rhs);
+				bool operator!=(const_iterator &rhs);
 
 			};
 

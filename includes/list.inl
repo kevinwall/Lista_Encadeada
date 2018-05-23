@@ -711,11 +711,23 @@ const T list<T>const_iterator list<T>::operator*() const {
 }
 
 template<typename T>
-typename list<T:::const_iterator& list<T>::const_iterator::operator++(){
+typename list<T>::const_iterator& list<T>::const_iterator::operator++(){
 	atual = atual->m_next;
 	return *this;
 }
 
+template<typename T>
+typename list<T>::const_iterator list<T>::const_iterator::operator++(int){
+	auto it = *this;
+	atual = atual->m_next;
+	return it;
+}
+
+template<typename T>
+typename list<T>::const_iterator& list<T>::const_iterator::operator--(){
+	atual = atual -> m_prev;
+	return *this;
+}
 /**
 *@brief Função begin do iterator.
 */
