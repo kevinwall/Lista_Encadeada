@@ -117,8 +117,7 @@ namespace sc
 					T m_data;
 					Node* m_next;
 					Node* m_prev;
-<<<<<<< HEAD
-=======
+
 
 					
 					Node(const T & d = T(), Node* p = nullptr, Node* n = nullptr) : m_data(d), m_next(n), m_prev(p)
@@ -128,48 +127,79 @@ namespace sc
 					
 			};
 
+			class const_iterator
+			{
+			private:
+				Node * atual;
+				friend class list<T>;
+			public:
+				 const_iterator();
+				~ const_iterator();
+				
+				const T operator*();
+
+				const_iterator &operator++();
+
+				//const_iterator operator++(int);
+
+				//const_iterator &operator--();
+
+				//const_iterator operator--(int):
+
+				//bool operator==(const_iterator &rhs);
+
+				//bool operator!=(const_iterator &rhs);
+
+			};
+
+
 			class iterator
 			{
 	
 				public:
 
-					friend iterator(Node* ponteiro) : m_element(ponteiro)
+					 iterator(Node* ponteiro) : m_element(ponteiro)
 					{
 
 					}
 
-					friend iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
+					 iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
 					{
 						//Empty
 					}
 
-					friend iterator begin();
+					 iterator begin();
 
-					friend iterator end();
+					 iterator end();
 
-					friend iterator operator++();
+					 iterator operator++();
 
-					friend iterator operator++(T it);
+					 iterator operator++(T it);
 
-					friend iterator operator--();
+					 iterator operator--();
 
-					friend iterator operator--(T it);
+					 iterator operator--(T it);
 
-					friend iterator operator*();
+					 iterator operator*();
 
-					friend iterator operator==(iterator rhs);
+					 iterator operator==(iterator rhs);
 
-					friend iterator operator!=(iterator rhs);
+					 iterator operator!=(iterator rhs);
 
 				private:
 					Node* m_element;
->>>>>>> 586d4bef19d71b6884eb3411929f29da7f5e4348
+
 			};
 
 		private:
 			size_type m_size;
+
 			Node m_head;
 			Node m_tail;
+
+			Node* m_head;
+			Node* m_tail;
+
 	};
 
 	#include "list.inl"

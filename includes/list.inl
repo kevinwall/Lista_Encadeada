@@ -4,7 +4,10 @@
 *@brief Construtor defaut, que cria uma lista nula.
 */
 template<typename T>
+
 list<T>::list( void ) : m_size(0), m_head(), m_tail()
+list<T>::list( void ) : m_head(nullptr), m_size(0), m_tail(nullptr)
+
 {
 	/*Empty*/
 }
@@ -43,6 +46,7 @@ list<T>::list(typename list<T>::size_type count )
 	}
 
 	prev->m_next = nullptr;
+
 	m_tail.m_prev = prev;
 	prev = m_head.m_next;
 	prev->m_prev = nullptr;
@@ -87,6 +91,11 @@ list<T>::list( InputIt first, InputIt last )
 	}
 
 	m_tail.m_prev = atual;
+
+	this->m_tail = prev;
+	prev = this->m_head;
+	prev->m_prev = nullptr;
+
 }
 
 /**
@@ -104,7 +113,11 @@ list<T>::list( const list& other )
 	Node* origin; 
 	Node* copy;
 	Node* prev;
+
 	origin = ponteiro->m_head.m_next;
+
+	origin = ponteiro->m_head;
+
 
 	//EXPERIMENTAL.
 	Node* node_principal = new Node;
@@ -121,7 +134,11 @@ list<T>::list( const list& other )
 		copy->m_next = new_node;
 
 
+
 		if(copy == m_head.m_next)
+
+		if(copy == this->m_head)
+
 		{
 			copy->m_prev = nullptr;
 			copy = copy->m_next;
@@ -137,7 +154,11 @@ list<T>::list( const list& other )
 	
 	copy->m_data = origin->m_data;
 	copy->m_prev = prev;
+
 	m_tail.m_prev = copy;
+
+	this->m_tail = copy;
+
 
 }
 
@@ -182,7 +203,11 @@ list<T>::list( std::initializer_list<T> ilist )
 
 	prev->m_prev = prev_2;
 	prev->m_next = nullptr;
+<<<<<<< HEAD
 	m_tail.m_prev = prev;
+=======
+	this->m_tail = prev;
+>>>>>>> Beta
 }
 
 /**
@@ -476,167 +501,160 @@ bool list<T>::operator==(const list& rhs )
 	}
 }
 
-/*
-//Gegeo
-template <typename T>
-void list<T>::push_front(const T & value){
-	Node * atual = this->m_head;
 
-	atual->m_next = nullptr;
-	atual->m_data = value;
-	atual->m_next = this->m_head;
-	this->m_head = atual;
-
+/**
+*@brief Função size que retorna a quantidade de nodes(blocos com informação) existentes na lista.
+*/
+template<typename T>
+typename list<T>::size_type list<T>::size() const
+{
+	return this->m_size;
 }
 
-template <typename T>
-void list<T>::push_back(const T & value){
-	Node * atual = this->m_head;
+/**
+*@brief Função clear que limpa (Fisicamente) a lista.
+*/
+template<typename T>
+void list<T>::clear()
+{
+	std::cout<<this->m_head<<std::endl;
+	if(this->m_head != nullptr)
+	{
+		Node* fast;
+		Node* slow;
+		fast = this->m_head;
 
-	if(this->m_head == nullptr){
-		this->m_head = atual;
+		while(fast->m_next != nullptr)
+		{
+			slow = fast;
+			fast = fast->m_next;
+
+			if(slow != this->m_head)
+			{
+				delete slow;
+			}
+			else
+			{
+				slow->m_data.~T();
+				slow->m_next = nullptr;
+			}
+			
+		}
+
+		delete fast;
+
+		std::cout<<this->m_head<<std::endl;
 	}
-
-	Node * tail = this->m_head;
-
-	while( tail->m_next != nullptr){
-		tail = tail->m_next;
-	}
-
-	tail->m_data = value;
 }
 
-template <typename T>
-void list<T>::pop_back(){
-	Node * atual;
-
-	if(this->m_head == nullptr){
-		this->m_head = atual;
-		delete atual;
-	}
-
-	Node * tail = this->m_head;
-
-	while( tail->m_next != nullptr){
-		tail = tail->m_next;
-	}
-
-	delete tail;
+/**
+*@brief Função empty, que retorna true caso a lista seja vazia e false caso contrário.
+*/
+template<typename T>
+bool list<T>::empty()
+{
+	return (this->m_size == 0);
 }
 
-template <typename T>
-void list<T>::pop_front(){
-	Node * atual;
 
-	if(this->m_head != nullptr){
-		atual = this->m_next;
-		this->m_next = atual->m_next;
-		delete atual; 
-	}else{
+/**
+*@brief Função back, que retorna o ultimo objeto da lista.
+*/
+template<typename T>
+const T & list<T>::back() const
+{
+	return (m_tail->m_data);
+}
+
+/**
+*@brief Função front, que retorna o primeiro objeto da lista.
+*/
+template<typename T>
+const T & list<T>::front() const
+{
+	return (m_head->m_data);
+}
+
+/**
+*@brief Operador == utilizado para comparar as listas.
+*@param const list& rhs: Lista a ser comparada com a this.
+*/
+template<typename T>
+bool list<T>::operator==(const list& rhs )
+{
+	
+
+	if(this->m_size != rhs.m_size)
+	{
+		return false;
+	}
+	else
+	{
+		Node* atual;
+		Node* rhs_atual;
+
+		rhs_atual = rhs.m_head;
 		atual = this->m_head;
-		delete atual;
-	}
-}
+		
+		while(atual != nullptr)
+		{
+			if(atual->m_data != rhs_atual->m_data)
+			{
+				return false;
+			}
 
-template <typename T>
-void list<T>::assign( const T & value){
-	Node *atual = this->m_head;
+			atual = atual->m_next;
+			rhs_atual = rhs_atual->m_next;
+		}
 
-	while ( atual-> m_next != nullptr){
-		this->m_head = this->m_next;
-		delete atual;
-		atual = this->m_head;
-	}
-
-	while ( atual -> m_next != nullptr){
-		atual -> m_data = value;
-		atual = atual ->m_next;
-	}
-}
-
-template <typename T>
-bool list<T>::operator !=( const list& rhs){
-	auto work ( rhs );
-
-	if(work.m_size != this->m_size){
 		return true;
 	}
-<<<<<<< HEAD
 }
+
 
 template <typename T>
 void list<T>::push_front(const T & value){
-	Node * atual = this->m_head;
-
-	atual->m_next = nullptr;
+	Node * atual = new Node;
+	
 	atual->m_data = value;
-	atual->m_next = this->m_head;
 	this->m_head = atual;
-
 }
 
 template <typename T>
 void list<T>::push_back(const T & value){
-	Node * atual = this->m_head;
+	Node * atual = new Node;
 
 	if(this->m_head == nullptr){
-		this->m_head = atual;
+		m_head->m_next = atual;
 	}
 
-	Node * tail = this->m_head;
-
-	while( tail->m_next != nullptr){
-		tail = tail->m_next;
-	}
-
-	tail->m_data = value;
+	atual->m_data = value;
+	this->m_tail = atual;
 }
 
 template <typename T>
 void list<T>::pop_back(){
-	Node * atual;
 
-	if(this->m_head == nullptr){
-		this->m_head = atual;
-		delete atual;
+	if(this->m_head != nullptr){
+		delete m_tail;
 	}
 
-	Node * tail = this->m_head;
-
-	while( tail->m_next != nullptr){
-		tail = tail->m_next;
-	}
-
-	delete tail;
 }
 
 template <typename T>
 void list<T>::pop_front(){
-	Node * atual;
 
 	if(this->m_head != nullptr){
-		atual = (this->m_head)->m_next;
-		(this->m_head)->m_next = atual->m_next;
-		delete atual; 
-	}else{
-		atual = this->m_head;
-		delete atual;
+		delete m_head;
 	}
+
 }
 
 template <typename T>
 void list<T>::assign( const T & value){
-	Node *atual = this->m_head;
-
-	while ( atual-> m_next != nullptr){
-		this->m_head = (this->m_head)->m_next;
-		delete atual;
-		atual = this->m_head;
-	}
-
-	while ( atual -> m_next != nullptr){
-		atual -> m_data = value;
-		atual = atual ->m_next;
+	while( m_head != nullptr){
+		m_head.m_data = value;
+		m_head = m_head.m_next;
 	}
 }
 
@@ -644,22 +662,31 @@ template <typename T>
 bool list<T>::operator !=( const list& rhs){
 	auto work ( rhs );
 
+
 	if(work.m_size != (this->m_head).m_size){
+
+	if(work.m_size != this->m_size){
+
 		return true;
 	}
 
 	if( work != nullptr){
 
+
 		if( work->m_data != (this->m_head)->m_data){
+
+		if( work->m_data != this->m_data){
+
 			return true;
 		}
 
 		work = work->m_next;
+
 		this->m_head = (this->m_head)->m_next;
 	}
 
 	return false;
-=======
+
 
 	if( work != nullptr){
 
@@ -668,18 +695,32 @@ bool list<T>::operator !=( const list& rhs){
 		}
 
 		work = work->m_next;
+
+}
+
+
 		this->m_head = this->m_next;
 	}
 
 	return false;
 }
-*/
+
+template <typename T>
+const T list<T>const_iterator list<T>::operator*() const {
+	return atual->m_data;
+}
+
+template<typename T>
+typename list<T:::const_iterator& list<T>::const_iterator::operator++(){
+	atual = atual->m_next;
+	return *this;
+}
 
 /**
 *@brief Função begin do iterator.
 */
 template <typename T>
-friend typename list<T>::iterator list<T>::iterator::begin()
+ typename list<T>::iterator list<T>::iterator::begin()
 {
 	return iterator(m_head.m_next);
 }
@@ -688,7 +729,7 @@ friend typename list<T>::iterator list<T>::iterator::begin()
 *@brief Função end do iterator.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::end()
+ typename list<T>::iterator list<T>::iterator::end()
 {
 	return iterator(m_tail.m_prev);
 }
@@ -697,7 +738,7 @@ friend typename list<T>::iterator list<T>::iterator::end()
 *@brief Operador ++ do iterator (it++).
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator++()
+ typename list<T>::iterator list<T>::iterator::operator++()
 {
 	iterator temp(this);
 
@@ -711,7 +752,7 @@ friend typename list<T>::iterator list<T>::iterator::operator++()
 *@param iterator it: iterador que será avançado. 
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator++(T it)
+ typename list<T>::iterator list<T>::iterator::operator++(T it)
 {
 	return (it->m_next);
 }
@@ -720,7 +761,7 @@ friend typename list<T>::iterator list<T>::iterator::operator++(T it)
 *@brief Operador -- do iterator (it--).
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator--()
+ typename list<T>::iterator list<T>::iterator::operator--()
 {
 	iterator temp(this);
 
@@ -734,7 +775,7 @@ friend typename list<T>::iterator list<T>::iterator::operator--()
 *@param iterator it: iterador a ser regredido.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator--(T it)
+ typename list<T>::iterator list<T>::iterator::operator--(T it)
 {
 	return (this->m_prev);
 }
@@ -743,7 +784,7 @@ friend typename list<T>::iterator list<T>::iterator::operator--(T it)
 *@brief Operador * do iterator, que retorna o valor armazenado na posição do iterador.
 */
 template <typename T>
-friend typename list<T>::iterator list<T>::iterator::operator*()
+ typename list<T>::iterator list<T>::iterator::operator*()
 {
 	return (this->m_data);
 }
@@ -753,7 +794,7 @@ friend typename list<T>::iterator list<T>::iterator::operator*()
 *@param iterator rhs: segundo iterador para comparar com o this.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
+ typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
 {
 	return (this == rhs);
 }
@@ -763,8 +804,9 @@ friend typename list<T>::iterator list<T>::iterator::operator==(iterator rhs)
 *@param iterator rhs: segundo iterador para comparar com o this.
 */
 template<typename T>
-friend typename list<T>::iterator list<T>::iterator::operator!=(iterator rhs)
+ typename list<T>::iterator list<T>::iterator::operator!=(iterator rhs)
 {
 	return (this != rhs);
->>>>>>> 586d4bef19d71b6884eb3411929f29da7f5e4348
+
 }
+
