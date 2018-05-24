@@ -105,6 +105,7 @@ namespace sc
 
 			bool operator!=(const list& rhs );
 
+
 			/**
 			*@brief Classe node que é a subclasse de list que irá representar os blocos de memória com o conteúdo da lista.
 			*@param T m_data: Conteúdo do bloco.
@@ -118,7 +119,6 @@ namespace sc
 					Node* m_next;
 					Node* m_prev;
 
-
 					
 					Node(const T & d = T(), Node* p = nullptr, Node* n = nullptr) : m_data(d), m_next(n), m_prev(p)
 					{
@@ -127,79 +127,52 @@ namespace sc
 					
 			};
 
-			class const_iterator
-			{
-			private:
-				Node * atual;
-				friend class list<T>;
-			public:
-				 const_iterator();
-				~ const_iterator();
-				
-				const T operator*();
-
-				const_iterator &operator++();
-
-				const_iterator operator++(int);
-
-				const_iterator &operator--();
-
-				const_iterator operator--(int):
-
-				bool operator==(const_iterator &rhs);
-
-				bool operator!=(const_iterator &rhs);
-
-			};
-
-
 			class iterator
 			{
 	
 				public:
 
-					 iterator(Node* ponteiro) : m_element(ponteiro)
-					{
-
-					}
-
-					 iterator(list ponteiro) : m_element(ponteiro.m_head.m_next)
+					iterator( void ) : m_element(nullptr)
 					{
 						//Empty
 					}
 
-					 iterator begin();
+					iterator(Node* ponteiro) : m_element(ponteiro)
+					{
+						//Empty
+						std::cout<<"Valor do m_element: "<<m_element<<std::endl;
+					}
 
-					 iterator end();
+					void print();
 
-					 iterator operator++();
+					iterator operator++();
 
-					 iterator operator++(T it);
+					iterator operator++(int);
 
-					 iterator operator--();
+					iterator operator--();
 
-					 iterator operator--(T it);
+					iterator operator--(int);
 
-					 iterator operator*();
+					T& operator*();
 
-					 iterator operator==(iterator rhs);
+					bool operator==(iterator rhs);
 
-					 iterator operator!=(iterator rhs);
+					bool operator!=(iterator rhs);
 
 				private:
 					Node* m_element;
-
 			};
+
+			Node* get_head();
+
+			iterator begin();
+
+			iterator end();
 
 		private:
 			size_type m_size;
-
 			Node m_head;
 			Node m_tail;
-
-			Node* m_head;
-			Node* m_tail;
-
 	};
 
 	#include "list.inl"

@@ -24,15 +24,26 @@ int main( void )
 	lista_count.~list();
 	*/
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-	sc::list<int>::iterator lista_copy_it = lista_copy;
-=======
-	sc::list<int>::iterator lista_copy_it = lista_op2;
->>>>>>> c78de2f1717583f6d53d87ba97d0e7f52e1b84a8
+	sc::list<int>::iterator lista_copy_it(lista_op2.begin());
+	sc::list<int>::iterator lista_copy_it2(lista_op2.begin());
+	std::cout<<"Head da lista: "<<lista_op2.get_head()<<std::endl;
+	std::cout<<"Valor no head da lista: "<<lista_op2.front()<<std::endl;
 
-=======
->>>>>>> Beta
+	
+
+	lista_copy_it++;
+	lista_copy_it.print();
+	std::cout<<"Valor do iterator: "<<*lista_copy_it<<std::endl;
+	++lista_copy_it;
+	lista_copy_it.print();
+	std::cout<<"Valor do iterator: "<<*lista_copy_it<<std::endl;
+	lista_copy_it--;
+	lista_copy_it.print();
+	std::cout<<"Valor do iterator: "<<*lista_copy_it<<std::endl;
+
+	std::cout<<"Os iteradores são iguais?  "<<(lista_copy_it == lista_copy_it2)<<std::endl;
+
+	/*
 	std::cout<<lista_inicia.size()<<std::endl;
 	std::cout<<"Limpando a lista..."<<std::endl;
 	lista_inicia.clear();
@@ -41,29 +52,10 @@ int main( void )
 	std::cout<<lista_copy.front()<<std::endl;
 	std::cout<<lista_copy.back()<<std::endl;
 	std::cout<<(lista_inicia == lista_inicia)<<std::endl;
-
-<<<<<<< HEAD
-	/*
-<<<<<<< HEAD
-	std::cout<<lista_copy_it.begin()<<std::endl;
-	std::cout<<lista_copy_it.end()<<std::endl;
-	std::cout<<(lista_copy_it.begin())*<<std::endl;
-	std::cout<<(lista_copy_it.begin() == lista_copy_it.begin())<<std::endl;
-	std::cout<<(lista_copy_it.begin() != lista_copy_it.begin())<<std::endl;
-	std::cout<<(lista_copy_it.begin())++<<std::endl;
-	std::cout<<(lista_copy_it.begin())--<<std::endl;
 	*/
-
-=======
 	
-	(lista_copy.begin()).print();
-	(lista_copy.end()).print();
-	(lista_copy_it).print();
-	std::cout<<*(lista_copy_it)<<std::endl;
->>>>>>> c78de2f1717583f6d53d87ba97d0e7f52e1b84a8
+
 	/*
-=======
->>>>>>> Beta
 	std::cout<<"dando push front"<<std::endl;
 	lista_copy.push_front(2);
 	std::cout<<"dando push back"<<std::endl;
