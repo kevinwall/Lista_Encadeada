@@ -6,7 +6,8 @@ Este projeto tem a intenção de implementar uma lista encadeada personalizada s
 
 - Classe list que guarda os métodos e o início e fim da lista;
 - Classe node que guarda os dados em si;
-- Classe iterator que percorre a lista.
+- Classe iterator que percorre a lista;
+- Classe const_iterator que é basicamente um iterator com os métodos const.
 
 # Métodos das classes customizadas: #
 
@@ -33,13 +34,31 @@ Este projeto tem a intenção de implementar uma lista encadeada personalizada s
 
 ## Classe iterator: ##
 
-- Construtor com Node, list e default;
+- Construtor com Node e default;
 - print;
 - operator++;
 - operator--;
+- operator =;
 - operador de valor;
 - operator ==;
-- operator !=.
+- operator !=;
+- Funções assign;
+- Funções erase;
+- Funções insert.
+
+## Classe const_iterator ##
+
+- Construtor com Node e default;
+- print;
+- operator++;
+- operator--;
+- operator =;
+- operador de valor;
+- operator ==;
+- operator !=;
+- Funções assign;
+- Funções erase;
+- Funções insert.
  
 # Autoria: #
 

@@ -152,9 +152,9 @@ list<T>::list( std::initializer_list<T> ilist )
 	Node* atual;
 	Node* prev_2;
 
-	int *i;
+	T *i;
 
-	for(i = (int*)ilist.begin(); i < (int*)ilist.end(); i++)
+	for(i = (T*)ilist.begin(); i < (T*)ilist.end(); i++)
 	{
 		Node* new_node = new Node;
 
@@ -305,9 +305,9 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		atual = m_head.m_next;
 
-		int* i;
+		T* i;
 
-		i = (int*)ilist.begin();
+		i = (T*)ilist.begin();
 
 		while(atual->m_next != nullptr)
 		{
@@ -334,7 +334,7 @@ list<T> & list<T>::operator=( std::initializer_list<T> ilist )
 
 		int *i;
 
-		for(i = (int*)ilist.begin(); i < (int*)ilist.end(); i++)
+		for(i = (T*)ilist.begin(); i < (T*)ilist.end(); i++)
 		{
 			Node* new_node = new Node;
 
@@ -476,12 +476,6 @@ bool list<T>::operator==(const list& rhs )
 	}
 }
 
-template<typename T>
-typename list<T>::Node* list<T>::get_head()
-{
-	return (this->m_head.m_next);
-}
-
 template <typename T>
 void list<T>::push_front(const T & value){
 	Node * atual = new Node;
@@ -489,6 +483,8 @@ void list<T>::push_front(const T & value){
 	atual->m_data = value;
 	atual->m_next = this->m_head.m_next;
 	this->m_head.m_next = atual;
+
+	this->m_size++;
 
 }
 
@@ -503,6 +499,8 @@ void list<T>::push_back(const T & value){
 	atual->m_data = value;
 	atual->m_prev = m_tail.m_prev;
 	m_tail.m_prev = atual;
+
+	this->m_size++;
 }
 
 template <typename T>
@@ -563,14 +561,6 @@ bool list<T>::operator !=( const list& rhs){
 }
 
 /**
-*@brief Método para printar o iterator atual.
-*/
-template<typename T>
-void list<T>::iterator::print()
-{
-	std::cout<<"Valor do iterator: "<<m_element<<std::endl;
-}
-/**
 *@brief Função begin do iterator.
 */
 template <typename T>
@@ -613,10 +603,9 @@ typename list<T>::iterator list<T>::iterator::operator++()
 
 /**
 *@brief Operador ++ do iterator (++it).
-*@param iterator it: iterador que será avançado. 
 */
 template<typename T>
-typename list<T>::iterator list<T>::iterator::operator++(int)
+typename list<T>::iterator list<T>::iterator::operator++(T)
 {
 	auto it = *this;
 
@@ -638,10 +627,9 @@ typename list<T>::iterator list<T>::iterator::operator--()
 
 /**
 *@brief Operador -- do iterator (--it).
-*@param iterator it: iterador a ser regredido.
 */
 template<typename T>
-typename list<T>::iterator list<T>::iterator::operator--(int)
+typename list<T>::iterator list<T>::iterator::operator--(T)
 {
 	auto it = *this;
 
@@ -679,8 +667,14 @@ bool list<T>::iterator::operator!=(iterator rhs)
 	return (this->m_element != rhs.m_element);
 }
 
+/**
+*@brief Função insert que insere um valor na posição anterior a pos, retornando a posição onde o valor foi inserido.
+*@param iterator pos: iterador indicando a posição após o local onde o valor será inserido.
+*@param const T & value: Valor que será inserido antes de pos.
+*/
 template<typename T>
-typename list<T>::iterator list<T>::insert( iterator pos,const T & value){
+typename list<T>::iterator list<T>::insert( iterator pos, const T & value)
+{
 	iterator it = pos;
 
 	it--;
@@ -688,4 +682,539 @@ typename list<T>::iterator list<T>::insert( iterator pos,const T & value){
 	it.m_element->m_data = value;
 	return it;
 
+}
+
+/**
+*@brief Função insert que insere um intervalo first->last a partir da posiçao anterior a pos, retornando a posição do ultimo valor inserido.
+*@param iterator pos: posição logo após de onde o valor será inserido.
+*@param InItr first: começo do intervalo que será inserido.
+*@param InItr last: final do intervalo que será inserido.
+*/
+template <typename T>
+template <typename InItr>
+typename list<T>::iterator list<T>::insert( iterator pos, InItr first, InItr last )
+{
+	iterator atual = pos;
+
+	atual--;
+
+	while(first != last)
+	{
+		if(atual.m_element->m_next != nullptr)
+		{
+			atual.m_element->m_data = *first;
+			atual++;
+		}
+		else
+		{
+			Node* new_node = new Node;
+
+			new_node->m_data = *first;
+
+			atual.m_element->m_next = new_node;
+
+			new_node = atual.m_element;
+
+			atual++;
+
+			atual.m_element->m_prev = new_node;
+
+			this->m_size++;
+		}
+
+		first++;
+	}
+
+	return atual;
+}
+
+/**
+*@brief Função insert que insere uma lista inicializadora antes de pos e retorna a posição do ultimo elemento inserido.
+*@param iterator pos: iterador para a posição após onde o valor será inserido.
+*@param std::initializer_list<T> ilist: lista inicializadora que será inserida na lista.
+*/
+template<typename T>
+typename list<T>::iterator list<T>::insert( iterator pos, std::initializer_list<T> ilist )
+{
+	iterator atual = pos;
+
+	atual--;
+
+	T* i;
+
+	for(i = (T*)ilist.begin(); i < (T*)ilist.end(); i++)
+	{
+		if(atual.m_element->m_next != nullptr)
+		{
+			atual.m_element->m_data = *i;
+			atual++;
+		}
+		else
+		{
+			Node* new_node = new Node;
+
+			new_node->m_data = *i;
+
+			atual.m_element->m_next = new_node;
+
+			new_node = atual.m_element;
+
+			atual++;
+
+			atual.m_element->m_prev = new_node;
+
+			this->m_size++;
+		}
+	}
+
+	return atual;
+}
+
+/**
+*@breif Método erase que apaga um elemento da lista indicado pela posição de pos e retorna a posição do elemento após pos antes da deleção
+*@param iterator pos: iterador para a posição que será deletada.
+*/
+template<typename T>
+typename list<T>::iterator list<T>::erase( iterator pos )
+{
+	iterator atual = pos;
+
+	if(atual.m_element != nullptr)
+	{
+		Node* prev;
+
+		prev = atual.m_element;
+
+		atual.m_element = atual.m_element->m_next;
+
+		prev->m_prev->m_next = atual.m_element;
+
+		atual.m_element->m_prev = prev->m_prev;
+
+		delete prev;
+	}
+
+	return atual;
+}
+
+/**
+*@brief Método erase que apaga um intervalo de elementos dentro da lista e retorna a posição logo após o ultimo elemento deletado.
+*@param iterator first: início do intervalo.
+*@param iterator last: final do intervalo.
+*/
+template<typename T>
+typename list<T>::iterator list<T>::erase( iterator first, iterator last )
+{
+	iterator prev, deletar;
+
+	if(this->m_head.m_next == first.m_element and this->m_tail.m_prev == last.m_element)
+	{
+		clear();
+	}
+	else
+	{
+		do
+		{
+			prev = first;
+			deletar = prev;
+
+			first++;
+
+			if(prev.m_element != this->m_head.m_next)
+			{
+				prev--;
+			}
+
+			prev.m_element->m_next = first.m_element;
+			first.m_element->m_prev = prev.m_element;
+
+			delete deletar.m_element;
+		}
+		while(first != last);
+	}
+
+	return first;
+} 
+
+/**
+*@brief Função assign que substitui count valores da lista por value.
+*@param size_type count: quantidade de cópias de value desejadas.
+*@param const T& value: valor que será inserido.
+*/
+template<typename T>
+void list<T>::assign( size_type count, const T& value )
+{
+	iterator atual = this->m_head.m_next;
+	size_type j, i;
+
+	if(count > this->m_size)
+	{
+		j = this->m_size;
+	}
+	else
+	{
+		j = count;
+	}
+
+	for( i = 0; i < j; i++)
+	{
+		atual.m_element->m_data = value;
+		atual++;
+	}
+} 
+
+/**
+*@brief Função assign que insere um intervalo dentro da lista.
+*@param iterator first: começo do intervalo.
+*@param interator last: final do intervalo.
+*/
+template<typename T>
+void list<T>::assign( iterator first, iterator last )
+{
+	iterator atual = this->m_head.m_next;
+
+	while(first != last)
+	{
+		atual.m_element->m_data = *first;
+		atual++;
+		first++;
+	}
+}
+
+/**
+*@brief Função assign que insere uma lista inicializadora na lista
+*@param std::initializer_list<T> ilist: lista inicializadora que será inserida na lista.
+*/
+template<typename T>
+void list<T>::assign( std::initializer_list<T> ilist )
+{
+	iterator atual = this->m_head.m_next;
+
+	T* i;
+
+	for( i = (T*)ilist.begin(); i < (T*)ilist.end(); i++)
+	{
+		atual.m_element->m_data = *i;
+		atual++; 
+	}
+}
+
+/**
+*@brief Método begin que retorna um const_iterator para o início da lista.
+*/
+template <typename T>
+typename list<T>::const_iterator list<T>::begin() const
+{
+	return const_iterator(m_head.m_next);
+}
+
+/**
+*@brief Função end do const_iterator.
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::end() const
+{
+	return const_iterator(m_tail.m_prev);
+}
+
+/**
+*@brief Operador = do const_iterator.
+*@param const_iterator rhs: iterador a ser copiado.
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::const_iterator::operator=( const_iterator rhs ) const
+{
+	this->m_const_element = rhs.m_const_element;
+
+	return *this;
+}
+
+/**
+*@brief Operador ++ do const_iterator (it++).
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::const_iterator::operator++() const
+{
+	m_const_element = m_const_element->m_next;
+
+	return *this;
+}
+
+/**
+*@brief Operador ++ do const_iterator (++it).
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::const_iterator::operator++(T) const
+{
+	auto it = *this;
+
+	m_const_element = m_const_element->m_next;
+
+	return it;
+}
+
+/**
+*@brief Operador -- do const_iterator (it--).
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::const_iterator::operator--() const
+{
+	m_const_element = m_const_element->m_prev;
+
+	return *this;
+}
+
+/**
+*@brief Operador -- do const_iterator (--it).
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::const_iterator::operator--(T) const
+{
+	auto it = *this;
+
+	m_const_element = m_const_element->m_prev;
+
+	return it;
+}
+
+/**
+*@brief Operador * do const_iterator, que retorna o valor armazenado na posição do iterador.
+*/
+template <typename T>
+T& list<T>::const_iterator::operator*() const
+{
+	return this->m_const_element->m_data;
+}
+
+/**
+*@brief Função insert que insere um valor na posição anterior a pos, retornando a posição onde o valor foi inserido.
+*@param const_iterator pos: iterador indicando a posição após o local onde o valor será inserido.
+*@param const T & value: Valor que será inserido antes de pos.
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::insert( const_iterator pos, const T & value) const
+{
+	iterator it = pos;
+
+	it--;
+
+	it.m_element->m_data = value;
+	return it;
+
+}
+
+/**
+*@brief Função insert que insere um intervalo first->last a partir da posiçao anterior a pos, retornando a posição do ultimo valor inserido.
+*@param const_iterator pos: posição logo após de onde o valor será inserido.
+*@param InItr first: começo do intervalo que será inserido.
+*@param InItr last: final do intervalo que será inserido.
+*/
+template <typename T>
+template <typename InItr>
+typename list<T>::const_iterator list<T>::insert( const_iterator pos, InItr first, InItr last ) const
+{
+	iterator atual = pos;
+
+	atual--;
+
+	while(first != last)
+	{
+		if(atual.m_element->m_next != nullptr)
+		{
+			atual.m_element->m_data = *first;
+			atual++;
+		}
+		else
+		{
+			Node* new_node = new Node;
+
+			new_node->m_data = *first;
+
+			atual.m_element->m_next = new_node;
+
+			new_node = atual.m_element;
+
+			atual++;
+
+			atual.m_element->m_prev = new_node;
+
+			this->m_size++;
+		}
+
+		first++;
+	}
+
+	return atual;
+}
+
+/**
+*@brief Função insert que insere uma lista inicializadora antes de pos e retorna a posição do ultimo elemento inserido.
+*@param const_iterator pos: iterador para a posição após onde o valor será inserido.
+*@param std::initializer_list<T> ilist: lista inicializadora que será inserida na lista.
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::insert( const_iterator pos, std::initializer_list<T> ilist ) const
+{
+	iterator atual = pos;
+
+	atual--;
+
+	T* i;
+
+	for(i = (T*)ilist.begin(); i < (T*)ilist.end(); i++)
+	{
+		if(atual.m_element->m_next != nullptr)
+		{
+			atual.m_element->m_data = *i;
+			atual++;
+		}
+		else
+		{
+			Node* new_node = new Node;
+
+			new_node->m_data = *i;
+
+			atual.m_element->m_next = new_node;
+
+			new_node = atual.m_element;
+
+			atual++;
+
+			atual.m_element->m_prev = new_node;
+
+			this->m_size++;
+		}
+	}
+
+	return atual;
+}
+
+/**
+*@breif Método erase que apaga um elemento da lista indicado pela posição de pos e retorna a posição do elemento após pos antes da deleção
+*@param const_iterator pos: iterador para a posição que será deletada.
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::erase( const_iterator pos ) const
+{
+	iterator atual = pos;
+
+	if(atual.m_element != nullptr)
+	{
+		Node* prev;
+
+		prev = atual.m_element;
+
+		atual.m_element = atual.m_element->m_next;
+
+		prev->m_prev->m_next = atual.m_element;
+
+		atual.m_element->m_prev = prev->m_prev;
+
+		delete prev;
+	}
+
+	return atual;
+}
+
+/**
+*@brief Método erase que apaga um intervalo de elementos dentro da lista e retorna a posição logo após o ultimo elemento deletado.
+*@param const_iterator first: início do intervalo.
+*@param const_iterator last: final do intervalo.
+*/
+template<typename T>
+typename list<T>::const_iterator list<T>::erase( const_iterator first, const_iterator last ) const
+{
+	iterator prev, deletar;
+
+	if(this->m_head.m_next == first.m_const_element and this->m_tail.m_prev == last.m_const_element)
+	{
+		clear();
+	}
+	else
+	{
+		do
+		{
+			prev = first;
+			deletar = prev;
+
+			first++;
+
+			if(prev.m_element != this->m_head.m_next)
+			{
+				prev--;
+			}
+
+			prev.m_element->m_next = first.m_const_element;
+			first.m_const_element->m_prev = prev.m_element;
+
+			delete deletar.m_element;
+		}
+		while(first != last);
+	}
+
+	return first;
+}  
+
+
+/**
+*@brief Função assign que substitui count valores da lista por value.
+*@param size_type count: quantidade de cópias de value desejadas.
+*@param const T& value: valor que será inserido.
+*/
+template<typename T>
+void list<T>::assign( size_type count, const T& value ) const
+{
+	iterator atual = this->m_head.m_next;
+	size_type j, i;
+
+	if(count > this->m_size)
+	{
+		j = this->m_size;
+	}
+	else
+	{
+		j = count;
+	}
+
+	for( i = 0; i < j; i++)
+	{
+		atual.m_element->m_data = value;
+		atual++;
+	}
+} 
+
+/**
+*@brief Função assign que insere um intervalo dentro da lista.
+*@param const_iterator first: começo do intervalo.
+*@param const_interator last: final do intervalo.
+*/
+template<typename T>
+void list<T>::assign( const_iterator first, const_iterator last ) const
+{
+	iterator atual = this->m_head.m_next;
+
+	while(first != last)
+	{
+		atual.m_element->m_data = *first;
+		atual++;
+		first++;
+	}
+}
+
+/**
+*@brief Função assign que insere uma lista inicializadora na lista
+*@param std::initializer_list<T> ilist: lista inicializadora que será inserida na lista.
+*/
+template<typename T>
+void list<T>::assign( std::initializer_list<T> ilist ) const
+{
+	iterator atual = this->m_head.m_next;
+
+	T* i;
+
+	for( i = (T*)ilist.begin(); i < (T*)ilist.end(); i++)
+	{
+		atual.m_element->m_data = *i;
+		atual++; 
+	}
 }
