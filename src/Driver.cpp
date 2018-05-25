@@ -43,6 +43,10 @@ int main( void )
 
 	std::cout<<"Os iteradores são iguais?  "<<(lista_copy_it == lista_copy_it2)<<std::endl;
 
+	lista_copy_it2 = lista_copy.insert(lista_copy_it,4);
+
+	std::cout<<"Valor do it: "<<*lista_copy_it2<<std::endl;
+
 	/*
 	std::cout<<lista_inicia.size()<<std::endl;
 	std::cout<<"Limpando a lista..."<<std::endl;
@@ -55,20 +59,28 @@ int main( void )
 	*/
 	
 
-	/*
+	
 	std::cout<<"dando push front"<<std::endl;
 	lista_copy.push_front(2);
+	std::cout<<"valor do elemento na frente: " << lista_copy.front() <<std::endl;
 	std::cout<<"dando push back"<<std::endl;
 	lista_copy.push_back(8);
+	std::cout<<"valor do elemento na atras: " << lista_copy.back() <<std::endl;
 
 	std::cout<<"dando pop front"<<std::endl;
 	lista_copy.pop_front();
+	std::cout<<"valor do elemento na frente: " << lista_copy.front() <<std::endl;
 	std::cout<<"dando pop back"<<std::endl;
 	lista_copy.pop_back();
+	std::cout<<"valor do elemento na atras: " << lista_copy.back() <<std::endl;
 
 	std::cout<<"dando o assign"<<std::endl;
 	lista_copy.assign(6);
+	std::cout<<"valor do elemento na frente: " << lista_copy.front() <<std::endl;
+	std::cout<<"valor do elemento na atras: " << lista_copy.back() <<std::endl;
+
+
 
 	std::cout<<(lista_copy != lista_copy)<<std::endl;
-	*/
+	
 }

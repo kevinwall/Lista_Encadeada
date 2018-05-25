@@ -481,105 +481,86 @@ typename list<T>::Node* list<T>::get_head()
 {
 	return (this->m_head.m_next);
 }
-/*
-//Gegeo
+
 template <typename T>
 void list<T>::push_front(const T & value){
-	Node * atual = this->m_head;
+	Node * atual = new Node;
 
-	atual->m_next = nullptr;
 	atual->m_data = value;
-	atual->m_next = this->m_head;
-	this->m_head = atual;
+	atual->m_next = this->m_head.m_next;
+	this->m_head.m_next = atual;
 
 }
 
 template <typename T>
 void list<T>::push_back(const T & value){
-	Node * atual = this->m_head;
+	Node * atual = new Node;
 
-	if(this->m_head == nullptr){
-		this->m_head = atual;
+	if(this->m_head.m_next == nullptr){
+		this->m_head.m_next = atual;
 	}
 
-	Node * tail = this->m_head;
-
-	while( tail->m_next != nullptr){
-		tail = tail->m_next;
-	}
-
-	tail->m_data = value;
+	atual->m_data = value;
+	atual->m_prev = m_tail.m_prev;
+	m_tail.m_prev = atual;
 }
 
 template <typename T>
 void list<T>::pop_back(){
 	Node * atual;
 
-	if(this->m_head == nullptr){
-		this->m_head = atual;
+	if(m_tail.m_prev != nullptr){
+		atual = m_tail.m_prev;
+		m_tail.m_prev = atual->m_prev;
 		delete atual;
 	}
 
-	Node * tail = this->m_head;
-
-	while( tail->m_next != nullptr){
-		tail = tail->m_next;
-	}
-
-	delete tail;
 }
 
 template <typename T>
 void list<T>::pop_front(){
 	Node * atual;
 
-	if(this->m_head != nullptr){
-		atual = this->m_next;
-		this->m_next = atual->m_next;
-		delete atual; 
-	}else{
-		atual = this->m_head;
+	if(m_head.m_next != nullptr){
+		atual = m_head.m_next;
+		m_head.m_next = atual -> m_next;
 		delete atual;
 	}
 }
 
 template <typename T>
 void list<T>::assign( const T & value){
-	Node *atual = this->m_head;
-
-	while ( atual-> m_next != nullptr){
-		this->m_head = this->m_next;
-		delete atual;
-		atual = this->m_head;
-	}
+	Node *atual = m_head.m_next;
 
 	while ( atual -> m_next != nullptr){
-		atual -> m_data = value;
-		atual = atual ->m_next;
+		atual->m_data = value;
+		atual = atual->m_next;
 	}
+
+	atual->m_data = value;
 }
+
 
 template <typename T>
 bool list<T>::operator !=( const list& rhs){
-	auto work ( rhs );
-
-	if(work.m_size != this->m_size){
+	if(this->m_size != rhs.m_size){
 		return true;
-	}
-
-	if( work != nullptr){
-
-		if( work->m_data != this->m_data){
-			return true;
+	}else{
+		Node *atual = m_head.m_next;
+		Node *atualrhs = rhs.m_head.m_next;
+		
+		while( atual != nullptr){
+			if( atual->m_data != atualrhs->m_data){
+				return true;
+			}
+			atual = atual->m_next;
+			atualrhs = atualrhs->m_next;
 		}
-
-		work = work->m_next;
-		this->m_head = this->m_next;
 	}
 
 	return false;
+
 }
-*/
 
 /**
 *@brief Método para printar o iterator atual.
@@ -605,6 +586,18 @@ template<typename T>
 typename list<T>::iterator list<T>::end()
 {
 	return iterator(m_tail.m_prev);
+}
+
+/**
+*@brief Operador = do iterator.
+*@param iterator rhs: iterador a ser copiado.
+*/
+template<typename T>
+typename list<T>::iterator list<T>::iterator::operator=( iterator rhs )
+{
+	this->m_element = rhs.m_element;
+
+	return *this;
 }
 
 /**
@@ -684,4 +677,15 @@ template<typename T>
 bool list<T>::iterator::operator!=(iterator rhs)
 {
 	return (this->m_element != rhs.m_element);
+}
+
+template<typename T>
+typename list<T>::iterator list<T>::insert( iterator pos,const T & value){
+	iterator it = pos;
+
+	it--;
+
+	it.m_element->m_data = value;
+	return it;
+
 }

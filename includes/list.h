@@ -145,6 +145,8 @@ namespace sc
 
 					void print();
 
+					iterator operator=( iterator rhs );
+
 					iterator operator++();
 
 					iterator operator++(int);
@@ -159,7 +161,6 @@ namespace sc
 
 					bool operator!=(iterator rhs);
 
-				private:
 					Node* m_element;
 			};
 
@@ -168,6 +169,8 @@ namespace sc
 			iterator begin();
 
 			iterator end();
+
+			iterator insert( iterator pos, const T & value);
 
 		private:
 			size_type m_size;
