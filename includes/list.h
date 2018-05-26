@@ -98,6 +98,11 @@ namespace sc
 					
 			};
 
+			/**
+			*@brief Classe iterator que tem todas as funções para manipulação do iterator na lista como também de comparação
+			*@param Nod * m_element
+			*/
+
 			class iterator
 			{
 	
@@ -131,6 +136,11 @@ namespace sc
 
 					Node* m_element;
 			};
+
+			/**
+			*@brief Classe iterator que tem todas as funções para manipulação do iterator na lista como também de comparação
+			*@param Nod * m_element
+			*/
 
 			class const_iterator
 			{

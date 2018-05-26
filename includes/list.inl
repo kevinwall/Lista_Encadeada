@@ -475,7 +475,10 @@ bool list<T>::operator==(const list& rhs )
 		return true;
 	}
 }
-
+/**
+*@brief Função da lista que insere um valor pela frente
+*@param const T&value
+*/
 template <typename T>
 void list<T>::push_front(const T & value){
 	Node * atual = new Node;
@@ -487,7 +490,10 @@ void list<T>::push_front(const T & value){
 	this->m_size++;
 
 }
-
+/**
+*@brief Função da lista que insere um valor por trás
+*@param const T&value
+*/
 template <typename T>
 void list<T>::push_back(const T & value){
 	Node * atual = new Node;
@@ -502,7 +508,9 @@ void list<T>::push_back(const T & value){
 
 	this->m_size++;
 }
-
+/**
+*@brief Função da lista que elimina um valor da frente
+*/
 template <typename T>
 void list<T>::pop_back(){
 	Node * atual;
@@ -514,7 +522,9 @@ void list<T>::pop_back(){
 	}
 
 }
-
+/**
+*@brief Função da lista que elimina um valor de trás
+*/
 template <typename T>
 void list<T>::pop_front(){
 	Node * atual;
@@ -525,7 +535,10 @@ void list<T>::pop_front(){
 		delete atual;
 	}
 }
-
+/**
+*@brief Aplica os valores em uma lista
+*@param const T & value
+*/
 template <typename T>
 void list<T>::assign( const T & value){
 	Node *atual = m_head.m_next;
@@ -537,7 +550,10 @@ void list<T>::assign( const T & value){
 
 	atual->m_data = value;
 }
-
+/**
+*@brief Função de comparação entre listas
+*@param const list& rhs
+*/
 
 template <typename T>
 bool list<T>::operator !=( const list& rhs){
